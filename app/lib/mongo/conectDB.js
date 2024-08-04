@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import printStatement from '../apiCommonUtils/printStatement';
 
-const connectionString= process.env.MONGODB_URI;
+const connectionString = process.env.MONGODB_URI;
 
 if (!connectionString) {
   printStatement('MONGODB_URI not found in environment variables');
@@ -25,7 +25,3 @@ export const disconnectDb = async () => {
     process.exit(1);
   });
 };
-
-
-
-
