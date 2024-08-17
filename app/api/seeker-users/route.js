@@ -6,7 +6,7 @@ export async function GET() {
   try {
     await connectDb(); // Ensure the DB is connected
 
-    const users = await User.find({ employer: { $regex: '^seeker$', $options: 'i' } });
+    const users = await User.find({ employer: { $regex: 'seeker', $options: 'i' } });
 
     await disconnectDb(); // Disconnect after the query is done
 
