@@ -4,26 +4,18 @@ import User from '../../lib/mongo/schema/userSchema'; // Assuming you have a Use
 
 export async function GET() {
   try {
-    // Connect to the database
-    await connectDb();
+    await connectDb(); // Ensure the DB is connected
 
-    // Fetch all users from the database
-    // const users = await User.find({});
     const users = await User.find({ employer: { $regex: '^seeker$', $options: 'i' } });
 
+    await disconnectDb(); // Disconnect after the query is done
 
-    // Disconnect from the database
-    await disconnectDb();
-
-    // Return the users as a JSON response
     return NextResponse.json(users, { status: 200 });
   } catch (error) {
     console.error('Error fetching users:', error);
 
-    // Disconnect from the database in case of an error
     await disconnectDb();
 
-    // Return an error response
     return NextResponse.json({ error: 'Unable to fetch users' }, { status: 500 });
   }
 }
