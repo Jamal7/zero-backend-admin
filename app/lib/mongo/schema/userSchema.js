@@ -1,40 +1,29 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 // Define the User schema
 const userSchema = new Schema({
-  userName: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
     required: true,
+    unique: true,
+    trim: true,
   },
-  contact: {
-    type: Number,
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
+  employer: {
+    type: String,
     required: true,
   },
   password: {
     type: String,
     required: true,
-  },
-  skills: {
-    type: [String], // Define skills as an array of strings
-    required: true,
   }
-});
-
-// Utility function to handle comma-separated skills
-userSchema.pre('save', function (next) {
-  const user = this;
-  if (typeof user.skills === 'string') {
-    user.skills = user.skills.split(',').map(skill => skill.trim());
-  }
-  next();
 });
 
 // Create a Model
-const User = model('User', userSchema);
+const User = mongoose.models.User || model('User', userSchema);
 
-module.exports = User;
+export default User;
