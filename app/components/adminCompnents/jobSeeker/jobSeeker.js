@@ -13,7 +13,7 @@ export default function JobSeekersTable() {
   useEffect(() => {
     async function fetchJobSeekers() {
       try {
-        const response = await fetch('http://localhost:3000/api/employe-users');
+        const response = await fetch('http://localhost:3000/api/seeker-users');
         const data = await response.json();
 
         // Ensure that data is an array, otherwise handle the response appropriately
