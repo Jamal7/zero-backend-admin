@@ -4,7 +4,6 @@ import User from "../../lib/mongo/schema/userSchema";
 import cloudinary from "cloudinary";
 import Busboy from "busboy";
 import { Writable } from "stream";
-import { promises as fs } from "fs";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
