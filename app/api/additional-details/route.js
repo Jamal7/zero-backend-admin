@@ -26,7 +26,7 @@ export async function POST(request) {
     }
 
     // Convert the file to a buffer
-    const arrayBuffer = await imageFile.file.arrayBuffer();
+    const arrayBuffer = await imageFil.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
     const result = await new Promise((resolve, reject) => {
@@ -50,11 +50,13 @@ export async function POST(request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    let updatedData = JSON.parse(JSON.stringify(user))
+    
+    updatedData= {...updatedData , description: description , imageUrl:result}
+
     user.description = description;
     user.imageUrl = result;
-
-    await user.save();
-
+    await User.updateOne({_id:updatedData._id},{updatedData});
     return NextResponse.json(
       { message: "Profile updated successfully", user },
       { status: 200 }
