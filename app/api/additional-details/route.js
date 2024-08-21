@@ -29,9 +29,19 @@ export async function POST(request) {
   }
 
   try {
-    // Convert the File object to an ArrayBuffer, then to a Buffer
-    const arrayBuffer = await imageFile.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    let buffer;
+
+    if (imageFile instanceof Buffer) {
+      buffer = imageFile;
+    } else if (typeof imageFile.arrayBuffer === 'function') {
+      const arrayBuffer = await imageFile.arrayBuffer();
+      buffer = Buffer.from(arrayBuffer);
+    } else if (typeof imageFile === 'string') {
+      // If the imageFile is a base64 string
+      buffer = Buffer.from(imageFile, 'base64');
+    } else {
+      throw new Error("Unsupported file type");
+    }
 
     console.log("Buffer created");
 
