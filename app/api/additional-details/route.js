@@ -20,8 +20,7 @@ export const routeSegmentConfig = {
 export async function POST(request) {
   await connectDb();
 
-  const form = new formidable.IncomingForm();
-  form.uploadDir = "./temp"; // You can change this directory
+  const form = formidable({}); // Proper way to create the formidable form
 
   try {
     const data = await new Promise((resolve, reject) => {
