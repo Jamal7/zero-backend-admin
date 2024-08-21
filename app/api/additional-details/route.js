@@ -1,3 +1,20 @@
+import { NextResponse } from "next/server";
+import { connectDb } from "../../lib/mongo/conectDB";
+import User from "../../lib/mongo/schema/userSchema";
+import cloudinary from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+export const routeSegmentConfig = {
+  api: {
+    bodyParser: false, // Disable Next.js's built-in body parser
+  },
+};
+
 export async function POST(request) {
     await connectDb();
   
@@ -72,4 +89,3 @@ export async function POST(request) {
       return NextResponse.json({ error: "Server error" }, { status: 500 });
     }
   }
-  
