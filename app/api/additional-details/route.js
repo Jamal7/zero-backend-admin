@@ -1,74 +1,68 @@
 import { NextResponse } from "next/server";
 import { connectDb } from "../../lib/mongo/conectDB";
-import User from "../../lib/mongo/schema/userSchema";
-import { uploadImageToCloudinary } from "../../lib/utils/cloudinary";
+import User from "../../lib/mongo/schema/userSchema";import { uploadImageToCloudinary } from "../../lib/utils/cloudinary";
+
 import cloudinary from "cloudinary";
-import streamToBuffer from "stream-to-buffer"; // Make sure it's installed if used
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
 export async function POST(request) {
-    await connectDb();
-  
-    const formData = await request.formData();
-    const email = formData.get("email");
-    const description = formData.get("description");
-    const imageFile = formData.get("image");
-  
-    console.log("Email:", email);
-    console.log("Description:", description);
-    console.log("ImageFile:", imageFile);
-  
-    if (!email || !description || !imageFile) {
-      return NextResponse.json(
-        { error: "All fields are required." },
-        { status: 400 }
-      );
-    }
-  
-    try {
-      // Convert Blob or File to a Buffer
-      const arrayBuffer = await imageFile.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-  
-      const result = await new Promise((resolve, reject) => {
-        const cloudinaryStream = cloudinary.v2.uploader.upload_stream(
-          { folder: "user_images" },
-          (error, result) => {
-            if (error) {
-              reject(new Error("Image upload failed"));
-            } else {
-              resolve(result.secure_url);
-            }
-          }
-        );
-  
-        // Send the buffer to the Cloudinary stream
-        cloudinaryStream.end(buffer);
-      });
-  
-      const user = await User.findOne({ email });
-  
-      if (!user) {
-        return NextResponse.json({ error: "User not found" }, { status: 404 });
-      }
-  
-      user.description = description;
-      user.imageUrl = result;
-  
-      await user.save();
-  
-      return NextResponse.json(
-        { message: "Profile updated successfully", user },
-        { status: 200 }
-      );
-    } catch (error) {
-      console.error("Error during profile update:", error);
-      return NextResponse.json({ error: "Server error" }, { status: 500 });
-    }
+  await connectDb();
+
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const description = formData.get("description");
+  const imageFile = formData.get("image"); // This is the actual File object
+
+  if (!email || !description || !imageFile) {
+    return NextResponse.json(
+      { error: "All fields are required." },
+      { status: 400 }
+    );
   }
-  
-  
+
+  try {
+    // Convert the File object to an ArrayBuffer, then to a Buffer
+    const arrayBuffer = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const result = await new Promise((resolve, reject) => {
+      const cloudinaryStream = cloudinary.v2.uploader.upload_stream(
+        { folder: "user_images" },
+        (error, result) => {
+          if (error) {
+            reject(new Error("Image upload failed"));
+          } else {
+            resolve(result.secure_url);
+          }
+        }
+      );
+
+      // Send the buffer to the Cloudinary stream
+      cloudinaryStream.end(buffer);
+    });
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    user.description = description;
+    user.imageUrl = result;
+
+    await user.save();
+
+    return NextResponse.json(
+      { message: "Profile updated successfully", user },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
