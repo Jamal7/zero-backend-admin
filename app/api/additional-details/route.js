@@ -26,7 +26,7 @@ export async function POST(request) {
     }
 
     // Convert the file to a buffer
-    const arrayBuffer = await imageFil.arrayBuffer();
+    const arrayBuffer = await imageFile.arrayBuffer(); // Fixed typo here
     const buffer = Buffer.from(arrayBuffer);
 
     const result = await new Promise((resolve, reject) => {
@@ -50,13 +50,11 @@ export async function POST(request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    let updatedData = JSON.parse(JSON.stringify(user))
-    
-    updatedData= {...updatedData , description: description , imageUrl:result}
-
+    // Updating user fields
     user.description = description;
     user.imageUrl = result;
-    await User.updateOne({_id:updatedData._id},{updatedData});
+    await user.save(); // Updated to save user directly
+
     return NextResponse.json(
       { message: "Profile updated successfully", user },
       { status: 200 }
