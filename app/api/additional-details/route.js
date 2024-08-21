@@ -60,7 +60,7 @@ export async function POST(request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("oh! Error during profile update:", error);
+    console.error("Error during profile update:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
