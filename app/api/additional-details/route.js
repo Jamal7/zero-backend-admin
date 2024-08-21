@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { connectDb } from "../../lib/mongo/conectDB";
 import User from "../../lib/mongo/schema/userSchema";
 import cloudinary from "cloudinary";
+import formidable from "formidable";
+import { promises as fs } from "fs";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -9,20 +11,31 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+export const config = {
+  api: {
+    bodyParser: false, // Disable Next.js's built-in body parser
+  },
+};
+
 export async function POST(request) {
   await connectDb();
 
+  const form = new formidable.IncomingForm();
+  form.uploadDir = "./temp"; // You can change this directory
+
   try {
-    const formData = await request.formData(); // Only read the body once
+    const data = await new Promise((resolve, reject) => {
+      form.parse(request, (err, fields, files) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ fields, files });
+        }
+      });
+    });
 
-    // Log the form data for debugging purposes
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
-    const email = formData.get("email");
-    const description = formData.get("description");
-    const imageFile = formData.get("image");
+    const { email, description } = data.fields;
+    const imageFile = data.files.image;
 
     if (!email || !description || !imageFile) {
       return NextResponse.json(
@@ -31,9 +44,7 @@ export async function POST(request) {
       );
     }
 
-    // Convert the file to a buffer
-    const arrayBuffer = await imageFile.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const imageBuffer = await fs.readFile(imageFile.filepath);
 
     const result = await new Promise((resolve, reject) => {
       const cloudinaryStream = cloudinary.v2.uploader.upload_stream(
@@ -47,7 +58,7 @@ export async function POST(request) {
         }
       );
 
-      cloudinaryStream.end(buffer);
+      cloudinaryStream.end(imageBuffer);
     });
 
     const user = await User.findOne({ email });
