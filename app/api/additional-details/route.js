@@ -11,7 +11,8 @@ cloudinary.config({
 
 export async function POST(request) {   
   await connectDb();
-
+  console.log("Request Headers:", request.headers);
+  console.log("Request Body:", await request.text());
   try {
     const formData = await request.formData();
     for (const [key, value] of formData.entries()) {
