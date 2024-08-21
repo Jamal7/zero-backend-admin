@@ -3,6 +3,10 @@ const { Schema, model } = mongoose;
 
 // Define the User schema
 const userSchema = new Schema({
+  userName: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
@@ -20,6 +24,14 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
+  },
+  description: {
+    type: String,
+    default: 'null',
+  },
+  imageUrl: {
+    type: String,
+    default: 'null',
   }
 });
 

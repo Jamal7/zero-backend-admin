@@ -10,28 +10,19 @@ export default function JobSeekersTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchJobSeekers() {
-      try {
-        const response = await fetch('http://localhost:3000/api/seeker-users');
-        const data = await response.json();
-
-        // Debugging: Log data and type check
-        console.log('Data fetched:', data);
-        console.log('Type of data:', Array.isArray(data) ? 'Array' : typeof data);
-
-        if (Array.isArray(data)) {
-          setJobSeekers(data);
-        } else {
-          throw new Error("Unexpected API response structure, expected an array.");
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch job seekers:", error);
-        setError(error.message);
-        setLoading(false);
-      }
+  async function fetchJobSeekers() {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/seeker-users`);
+      const data = await response.json();
+      setJobSeekers(data); 
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch job seekers:", error);
+      setError(error.message);
+      setLoading(false);
     }
+  }
+  useEffect(() => {
 
     fetchJobSeekers();
   }, []);
@@ -41,12 +32,13 @@ export default function JobSeekersTable() {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>${process.env.NEXT_PUBLIC_API_URL} Error: {error} </div>;
   }
 
   return (
     <div className="p-5 bg-white shadow-md rounded-lg w-[70%] m-5">
       <h1 className="text-base font-bold text-[#5C5C5C] mb-5">Job Seeker</h1>
+      <h1 className="text-base font-bold text-[#5C5C5C] mb-5">{process.env.NEXTAUTH_URL}</h1>
 
       <div className="flex flex-col space-y-2">
         {/* Header Row */}
@@ -60,7 +52,7 @@ export default function JobSeekersTable() {
         </div>
 
         {/* Data Rows */}
-        {jobSeekers.map((seeker, index) => (
+        {jobSeekers.length > 0 && jobSeekers?.map((seeker, index) => (
           <div key={index} className="flex p-3 border border-[#F0F0F0] rounded-md bg-white h-16 items-center">
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">14/01/2019</div> {/* Static Date as in your example */}
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{seeker._id}</div>

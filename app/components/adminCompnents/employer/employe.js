@@ -6,13 +6,12 @@ import del from '../../../../public/icons/delete.svg';
 import Image from 'next/image';
 export default function JobSeekersTable() {
   const [jobSeekers, setJobSeekers] = useState([]);
-
+  async function fetchJobSeekers() {
+    const response = await fetch('/api/employe-users');
+    const data = await response.json();
+    setJobSeekers(data);
+  }
   useEffect(() => {
-    async function fetchJobSeekers() {
-      const response = await fetch('/api/employe-users');
-      const data = await response.json();
-      setJobSeekers(data);
-    }
     fetchJobSeekers();
   }, []);
 
@@ -32,7 +31,7 @@ export default function JobSeekersTable() {
         </div>
         
         {/* Data Rows */}
-        {jobSeekers.map((seeker, index) => (
+        {jobSeekers.length > 0 && jobSeekers?.map((seeker, index) => (
           <div key={index} className="flex p-3 bg-white border border-[#F0F0F0] rounded-md h-16 items-center">
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">14/01/2019</div> {/* Static Date as in your example */}
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">{seeker._id}</div>
