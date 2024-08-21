@@ -26,7 +26,7 @@ export async function POST(request) {
     }
 
     // Convert the file to a buffer
-    const arrayBuffer = await imageFile.arrayBuffer();
+    const arrayBuffer = await imageFile.file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
     const result = await new Promise((resolve, reject) => {
