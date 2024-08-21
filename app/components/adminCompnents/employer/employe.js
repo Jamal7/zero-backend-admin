@@ -7,7 +7,7 @@ import Image from 'next/image';
 export default function JobSeekersTable() {
   const [jobSeekers, setJobSeekers] = useState([]);
   async function fetchJobSeekers() {
-    const response = await fetch('/api/employe-users');
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/employe-users`);
     const data = await response.json();
     setJobSeekers(data);
   }
