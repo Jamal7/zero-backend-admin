@@ -14,6 +14,9 @@ export async function POST(request) {
 
   try {
     const formData = await request.formData();
+    for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
     const email = formData.get("email");
     const description = formData.get("description");
     const imageFile = formData.get("image");
