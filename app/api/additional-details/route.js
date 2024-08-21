@@ -12,48 +12,30 @@ cloudinary.config({
 export async function POST(request) {
   await connectDb();
 
-  console.log("Database connected");
-
-  const formData = await request.formData();
-  const email = formData.get("email");
-  const description = formData.get("description");
-  const imageFile = formData.get("image");
-
-  console.log("Form Data received:", { email, description, imageFile });
-
-  if (!email || !description || !imageFile) {
-    return NextResponse.json(
-      { error: "All fields are required." },
-      { status: 400 }
-    );
-  }
-
   try {
-    let buffer;
+    const formData = await request.formData();
+    const email = formData.get("email");
+    const description = formData.get("description");
+    const imageFile = formData.get("image");
 
-    if (imageFile instanceof Buffer) {
-      buffer = imageFile;
-    } else if (typeof imageFile.arrayBuffer === 'function') {
-      const arrayBuffer = await imageFile.arrayBuffer();
-      buffer = Buffer.from(arrayBuffer);
-    } else if (typeof imageFile === 'string') {
-      // If the imageFile is a base64 string
-      buffer = Buffer.from(imageFile, 'base64');
-    } else {
-      throw new Error("Unsupported file type");
+    if (!email || !description || !imageFile) {
+      return NextResponse.json(
+        { error: "All fields are required." },
+        { status: 400 }
+      );
     }
 
-    console.log("Buffer created");
+    // Convert the file to a buffer
+    const arrayBuffer = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
     const result = await new Promise((resolve, reject) => {
       const cloudinaryStream = cloudinary.v2.uploader.upload_stream(
         { folder: "user_images" },
         (error, result) => {
           if (error) {
-            console.error("Cloudinary upload failed:", error);
             reject(new Error("Image upload failed"));
           } else {
-            console.log("Image uploaded to Cloudinary:", result.secure_url);
             resolve(result.secure_url);
           }
         }
@@ -61,8 +43,6 @@ export async function POST(request) {
 
       cloudinaryStream.end(buffer);
     });
-
-    console.log("Image uploaded successfully:", result);
 
     const user = await User.findOne({ email });
 
@@ -74,8 +54,6 @@ export async function POST(request) {
     user.imageUrl = result;
 
     await user.save();
-
-    console.log("User updated successfully:", user);
 
     return NextResponse.json(
       { message: "Profile updated successfully", user },
