@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { connectDb } from "../../lib/mongo/conectDB";
 import User from "../../lib/mongo/schema/userSchema";
 import cloudinary from "cloudinary";
-import formidable from "formidable";
+import Busboy from "busboy";
+import { Writable } from "stream";
 import { promises as fs } from "fs";
 
 cloudinary.config({
@@ -20,63 +21,86 @@ export const routeSegmentConfig = {
 export async function POST(request) {
   await connectDb();
 
-  const form = formidable({}); // Proper way to create the formidable form
+  return new Promise((resolve, reject) => {
+    const busboy = new Busboy({ headers: request.headers });
+    let email = "";
+    let description = "";
+    let imageFileBuffer = null;
+    let imageFileType = "";
 
-  try {
-    const data = await new Promise((resolve, reject) => {
-      form.parse(request, (err, fields, files) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ fields, files });
-        }
+    busboy.on("field", (fieldname, val) => {
+      if (fieldname === "email") email = val;
+      if (fieldname === "description") description = val;
+    });
+
+    busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+      const bufferArray = [];
+      file.on("data", (data) => {
+        bufferArray.push(data);
+      });
+
+      file.on("end", () => {
+        imageFileBuffer = Buffer.concat(bufferArray);
+        imageFileType = mimetype;
       });
     });
 
-    const { email, description } = data.fields;
-    const imageFile = data.files.image;
+    busboy.on("finish", async () => {
+      if (!email || !description || !imageFileBuffer) {
+        return resolve(
+          NextResponse.json({ error: "All fields are required." }, { status: 400 })
+        );
+      }
 
-    if (!email || !description || !imageFile) {
-      return NextResponse.json(
-        { error: "All fields are required." },
-        { status: 400 }
-      );
-    }
+      try {
+        const result = await new Promise((resolve, reject) => {
+          const cloudinaryStream = cloudinary.v2.uploader.upload_stream(
+            { folder: "user_images" },
+            (error, result) => {
+              if (error) {
+                reject(new Error("Image upload failed"));
+              } else {
+                resolve(result.secure_url);
+              }
+            }
+          );
 
-    const imageBuffer = await fs.readFile(imageFile.filepath);
+          cloudinaryStream.end(imageFileBuffer);
+        });
 
-    const result = await new Promise((resolve, reject) => {
-      const cloudinaryStream = cloudinary.v2.uploader.upload_stream(
-        { folder: "user_images" },
-        (error, result) => {
-          if (error) {
-            reject(new Error("Image upload failed"));
-          } else {
-            resolve(result.secure_url);
-          }
+        const user = await User.findOne({ email });
+
+        if (!user) {
+          return resolve(
+            NextResponse.json({ error: "User not found" }, { status: 404 })
+          );
         }
-      );
 
-      cloudinaryStream.end(imageBuffer);
+        user.description = description;
+        user.imageUrl = result;
+        await user.save();
+
+        resolve(
+          NextResponse.json(
+            { message: "Profile updated successfully", user },
+            { status: 200 }
+          )
+        );
+      } catch (error) {
+        console.error("Error during profile update:", error);
+        resolve(
+          NextResponse.json({ error: "Server error" }, { status: 500 })
+        );
+      }
     });
 
-    const user = await User.findOne({ email });
+    busboy.on("error", (error) => {
+      console.error("Error processing file upload:", error);
+      reject(
+        NextResponse.json({ error: "File processing error" }, { status: 500 })
+      );
+    });
 
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    // Updating user fields
-    user.description = description;
-    user.imageUrl = result;
-    await user.save();
-
-    return NextResponse.json(
-      { message: "Profile updated successfully", user },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("Error during profile update:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
+    request.pipe(busboy);
+  });
 }
