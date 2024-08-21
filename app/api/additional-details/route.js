@@ -9,15 +9,17 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function POST(request) {   
+export async function POST(request) {
   await connectDb();
-  console.log("Request Headers:", request.headers);
-  console.log("Request Body:", await request.text());
+
   try {
-    const formData = await request.formData();
+    const formData = await request.formData(); // Only read the body once
+
+    // Log the form data for debugging purposes
     for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
+      console.log(`${key}: ${value}`);
+    }
+
     const email = formData.get("email");
     const description = formData.get("description");
     const imageFile = formData.get("image");
@@ -30,7 +32,7 @@ export async function POST(request) {
     }
 
     // Convert the file to a buffer
-    const arrayBuffer = await imageFile.arrayBuffer(); // Fixed typo here
+    const arrayBuffer = await imageFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
     const result = await new Promise((resolve, reject) => {
@@ -57,7 +59,7 @@ export async function POST(request) {
     // Updating user fields
     user.description = description;
     user.imageUrl = result;
-    await user.save(); // Updated to save user directly
+    await user.save();
 
     return NextResponse.json(
       { message: "Profile updated successfully", user },
