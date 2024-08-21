@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { connectDb } from "../../lib/mongo/conectDB";
 import User from "../../lib/mongo/schema/userSchema";
 import cloudinary from "cloudinary";
-import Busboy from "busboy";
-import { Writable } from "stream";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -20,86 +18,69 @@ export const routeSegmentConfig = {
 export async function POST(request) {
   await connectDb();
 
-  return new Promise((resolve, reject) => {
-    const busboy = new Busboy({ headers: request.headers });
-    let email = "";
-    let description = "";
+  try {
+    const contentType = request.headers.get('content-type');
+    const boundary = contentType.split('boundary=')[1];
+    const rawBody = await request.arrayBuffer();
+    const body = new TextDecoder().decode(rawBody);
+    
+    const parts = body.split(`--${boundary}`);
+
+    let email = '';
+    let description = '';
     let imageFileBuffer = null;
-    let imageFileType = "";
 
-    busboy.on("field", (fieldname, val) => {
-      if (fieldname === "email") email = val;
-      if (fieldname === "description") description = val;
-    });
-
-    busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
-      const bufferArray = [];
-      file.on("data", (data) => {
-        bufferArray.push(data);
-      });
-
-      file.on("end", () => {
-        imageFileBuffer = Buffer.concat(bufferArray);
-        imageFileType = mimetype;
-      });
-    });
-
-    busboy.on("finish", async () => {
-      if (!email || !description || !imageFileBuffer) {
-        return resolve(
-          NextResponse.json({ error: "All fields are required." }, { status: 400 })
-        );
+    for (let part of parts) {
+      if (part.includes('Content-Disposition: form-data; name="email"')) {
+        email = part.split('\r\n\r\n')[1].split('\r\n--')[0].trim();
       }
-
-      try {
-        const result = await new Promise((resolve, reject) => {
-          const cloudinaryStream = cloudinary.v2.uploader.upload_stream(
-            { folder: "user_images" },
-            (error, result) => {
-              if (error) {
-                reject(new Error("Image upload failed"));
-              } else {
-                resolve(result.secure_url);
-              }
-            }
-          );
-
-          cloudinaryStream.end(imageFileBuffer);
-        });
-
-        const user = await User.findOne({ email });
-
-        if (!user) {
-          return resolve(
-            NextResponse.json({ error: "User not found" }, { status: 404 })
-          );
-        }
-
-        user.description = description;
-        user.imageUrl = result;
-        await user.save();
-
-        resolve(
-          NextResponse.json(
-            { message: "Profile updated successfully", user },
-            { status: 200 }
-          )
-        );
-      } catch (error) {
-        console.error("Error during profile update:", error);
-        resolve(
-          NextResponse.json({ error: "Server error" }, { status: 500 })
-        );
+      if (part.includes('Content-Disposition: form-data; name="description"')) {
+        description = part.split('\r\n\r\n')[1].split('\r\n--')[0].trim();
       }
-    });
+      if (part.includes('Content-Disposition: form-data; name="image";')) {
+        const rawImage = part.split('\r\n\r\n')[1].split('\r\n--')[0].trim();
+        imageFileBuffer = Buffer.from(rawImage, 'binary');
+      }
+    }
 
-    busboy.on("error", (error) => {
-      console.error("Error processing file upload:", error);
-      reject(
-        NextResponse.json({ error: "File processing error" }, { status: 500 })
+    if (!email || !description || !imageFileBuffer) {
+      return NextResponse.json(
+        { error: "All fields are required." },
+        { status: 400 }
       );
+    }
+
+    const result = await new Promise((resolve, reject) => {
+      const cloudinaryStream = cloudinary.v2.uploader.upload_stream(
+        { folder: "user_images" },
+        (error, result) => {
+          if (error) {
+            reject(new Error("Image upload failed"));
+          } else {
+            resolve(result.secure_url);
+          }
+        }
+      );
+
+      cloudinaryStream.end(imageFileBuffer);
     });
 
-    request.pipe(busboy);
-  });
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    user.description = description;
+    user.imageUrl = result;
+    await user.save();
+
+    return NextResponse.json(
+      { message: "Profile updated successfully", user },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
 }
