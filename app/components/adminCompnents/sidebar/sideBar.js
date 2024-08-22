@@ -13,7 +13,7 @@ import paymentsIcon from '../../../../public/icons/payments.svg';
 import logoutIcon from '../../../../public/icons/logout.svg';
 
 const sidebarItems = [
-    { name: 'Overview', icon: homeIcon, isSvg: true, link: '/admin/overview' },
+    { name: 'Overview', icon: homeIcon, isSvg: true, link: '/admin' },
     { name: 'Statistics', icon: staticsIcon, isSvg: true, link: '/admin/statistics' },
     { name: 'Users', icon: userIcon, isSvg: true, link: '/admin/users' },
     { name: 'Jobs', icon: jobsIcon, isSvg: true, link: '/admin/jobs' },
