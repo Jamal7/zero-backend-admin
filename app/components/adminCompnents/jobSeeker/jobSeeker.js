@@ -19,6 +19,7 @@ export default function JobSeekersTable() {
       });
       const data = await response.json();
       setJobSeekers(data); 
+      setLoading(false);
     } catch (error) {
       console.error("Failed to fetch job seekers:", error);
     }
