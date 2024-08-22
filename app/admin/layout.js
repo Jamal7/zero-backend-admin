@@ -1,15 +1,19 @@
-// src/app/admin/page.js
+// src/app/admin/layout.js
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]/route';
-import Overview from '../components/adminCompnents/Overview';
 import { redirect } from 'next/navigation';
 
-export default async function AdminPage() {
+export default async function AdminLayout({ children }) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect('/');
+    return null;
   }
 
-  return <Overview session={session} />;
+  return (
+    <div className="admin-layout">
+      {children}
+    </div>
+  );
 }

@@ -5,9 +5,8 @@ import Topbar from "../../components/adminCompnents/topbar/topbar";
 import JobSeeker from "../../components/adminCompnents/jobSeeker/jobSeeker";
 import Employer from "../../components/adminCompnents/employer/employe";
 
-import authMiddleware from '../../auth/authMiddleware';
 
-function Users() {
+export default function Users() {
   return (
     <div className="flex">
         <SideBar />
@@ -20,5 +19,4 @@ function Users() {
   );
 }
 
-export default authMiddleware(Users);
 

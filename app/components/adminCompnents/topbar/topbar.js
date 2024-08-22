@@ -7,6 +7,8 @@ import notification from '../../../../public/icons/topbar-icon/notifications.svg
 import vector from '../../../../public/icons/topbar-icon/Vector.svg';
 import logout from '../../../../public/icons/topbar-icon/logout.svg';
 import searchIcon from '../../../../public/icons/topbar-icon/search.svg';
+import { signOut } from 'next-auth/react';
+
 
 
 export default function Topbar() {
@@ -51,7 +53,9 @@ export default function Topbar() {
                 <div className="flex items-center space-x-4 pl-3 w-24 justify-between">
                     <Image  src={notification}/>
 
-                  <Image src={logout}/>
+                    <button onClick={() => signOut({ callbackUrl: '/' })}>
+                        <Image src={logout} alt="Logout" />
+                    </button>
                 </div>
             </div>
         </div>

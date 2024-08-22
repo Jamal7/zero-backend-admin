@@ -1,69 +1,69 @@
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+// app/auth/signin/page.js
+"use client";
+// app/auth/signin/page.js
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function SignIn() {
   const router = useRouter();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
 
-    try {
-      const response = await fetch('/api/AdminLogin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
 
-      if (response.ok) {
-        const { token } = await response.json();
-        localStorage.setItem('token', token);
-        router.push('/admin/users');
-      } else {
-        alert('Invalid credentials');
-      }
-    } catch (error) {
-      console.error('Error logging in:', error);
-      alert('An error occurred. Please try again.');
+    if (result.ok) {
+      router.push("/admin");
+    } else {
+      alert("Failed to sign in. Please check your credentials.");
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold text-center text-gray-700">
+          Sign In
+        </h1>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label className="block text-sm font-medium text-gray-600">
+              Email
+            </label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
               required
-              className="w-full px-3 py-2 border rounded"
+              className="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-600">
+              Password
+            </label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
               required
-              className="w-full px-3 py-2 border rounded"
+              className="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
             />
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-700">
-            Login
-          </button>
+          <div>
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+            >
+              Sign In
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
-};
-
-export default Login;
+}
