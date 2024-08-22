@@ -1,25 +1,34 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import jwt from 'jsonwebtoken';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    const adminEmail = 'zero@gmail.com';
-    const adminPassword = '12345678';
+    try {
+      const response = await fetch('/api/AdminLogin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (email === adminEmail && password === adminPassword) {
-      const token = jwt.sign({ email: adminEmail }, 'your_jwt_secret_key', { expiresIn: '1h' });
-      localStorage.setItem('token', token);
-      router.push('/admin/users');
-    } else {
-      alert('Invalid credentials');
+      if (response.ok) {
+        const { token } = await response.json();
+        localStorage.setItem('token', token);
+        router.push('/admin/users');
+      } else {
+        alert('Invalid credentials');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      alert('An error occurred. Please try again.');
     }
   };
 
