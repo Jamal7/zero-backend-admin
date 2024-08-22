@@ -12,20 +12,22 @@ export default function JobSeekersTable() {
 
   async function fetchJobSeekers() {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/seeker-users`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/seeker-users`, {
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+      });
       const data = await response.json();
       setJobSeekers(data); 
-      setLoading(false);
     } catch (error) {
       console.error("Failed to fetch job seekers:", error);
-      setError(error.message);
-      setLoading(false);
     }
   }
+  
   useEffect(() => {
-
     fetchJobSeekers();
-  }, []);
+  }, []); // Fetches the data only once on component mount
+  
 
   if (loading) {
     return <div>Loading...</div>;

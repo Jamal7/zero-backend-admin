@@ -7,13 +7,29 @@ import Image from 'next/image';
 export default function JobSeekersTable() {
   const [jobSeekers, setJobSeekers] = useState([]);
   async function fetchJobSeekers() {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/employe-users`);
-    const data = await response.json();
-    setJobSeekers(data);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/employe-users`, {
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      setJobSeekers(data);
+    } catch (error) {
+      console.error("Failed to fetch job seekers:", error);
+      setError(error.message); // Assuming you have a state to store errors
+    }
   }
+  
   useEffect(() => {
     fetchJobSeekers();
   }, []);
+  
 
   return (
     <div className="p-5 bg-white shadow-md rounded-lg w-[70%] m-5">
