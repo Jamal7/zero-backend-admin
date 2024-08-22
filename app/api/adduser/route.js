@@ -67,3 +67,4 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Server error. Please try again later.' }, { status: 500 });
   }
 }
+export const dynamic = 'force-dynamic'
