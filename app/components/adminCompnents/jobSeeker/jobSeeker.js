@@ -6,6 +6,8 @@ import del from '../../../../public/icons/delete.svg';
 import Image from 'next/image';
 
 export default function JobSeekersTable() {
+  const truncatedString = seeker._id.slice(0, 7);
+
   const [jobSeekers, setJobSeekers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -49,6 +51,7 @@ export default function JobSeekersTable() {
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Date</div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">User ID</div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">User Name</div>
+          <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">User Email</div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Job Applied</div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Status</div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Action</div>
@@ -58,8 +61,9 @@ export default function JobSeekersTable() {
         {jobSeekers.length > 0 && jobSeekers?.map((seeker, index) => (
           <div key={index} className="flex p-3 border border-[#F0F0F0] rounded-md bg-white h-16 items-center">
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">14/01/2019</div> {/* Static Date as in your example */}
-            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{seeker._id}</div>
-            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{seeker.email.split('@')[0]}</div> {/* Example username */}
+            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{truncatedString}</div>
+            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{seeker.userName}</div>
+            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{seeker.email}</div>
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{Math.floor(Math.random() * 15) + 1}</div> {/* Random Job Applied */}
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
               <span className={`px-3 py-1 rounded-full text-white ${getStatusColor(seeker.status)}`}>
