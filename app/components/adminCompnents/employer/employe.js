@@ -41,6 +41,8 @@ export default function JobSeekersTable() {
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Date</div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">User ID</div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">User Name</div>
+          <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">User Email</div>
+
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Job Applied</div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Status</div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Action</div>
@@ -51,7 +53,9 @@ export default function JobSeekersTable() {
           <div key={index} className="flex p-3 bg-white border border-[#F0F0F0] rounded-md h-16 items-center">
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">14/01/2019</div> {/* Static Date as in your example */}
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">{seeker._id}</div>
-            <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">{seeker.email.split('@')[0]}</div> {/* Example username */}
+            <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">{seeker.userName}</div>
+
+            <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">{seeker.email}</div> {/* Example username */}
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">{Math.floor(Math.random() * 15) + 1}</div> {/* Random Job Applied */}
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
               <span className={`px-3 py-1 rounded-full text-white ${getStatusColor(seeker.status)}`}>
