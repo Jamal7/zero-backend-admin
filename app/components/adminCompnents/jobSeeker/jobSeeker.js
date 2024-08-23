@@ -6,7 +6,6 @@ import del from '../../../../public/icons/delete.svg';
 import Image from 'next/image';
 
 export default function JobSeekersTable() {
-  const truncatedString = seeker._id.slice(0, 7);
 
   const [jobSeekers, setJobSeekers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,6 +38,8 @@ export default function JobSeekersTable() {
   if (error) {
     return <div>${process.env.NEXT_PUBLIC_API_URL} Error: {error} </div>;
   }
+  const truncatedString = seeker._id.slice(0, 7);
+
 
   return (
     <div className="p-5 bg-white shadow-md rounded-lg w-[70%] m-5">
