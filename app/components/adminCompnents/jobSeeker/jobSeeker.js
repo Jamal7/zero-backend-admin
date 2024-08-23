@@ -62,7 +62,7 @@ export default function JobSeekersTable() {
         {jobSeekers.length > 0 && jobSeekers?.map((seeker, index) => (
           <div key={index} className="flex p-3 border border-[#F0F0F0] rounded-md bg-white h-16 items-center">
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">14/01/2019</div> {/* Static Date as in your example */}
-            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{truncatedString}</div>
+            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{seeker._id.slice(0, 7)}</div>
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{seeker.userName}</div>
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{seeker.email}</div>
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{Math.floor(Math.random() * 15) + 1}</div> {/* Random Job Applied */}
