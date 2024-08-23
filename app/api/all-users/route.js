@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
+
 import { connectDb, disconnectDb } from "../../lib/mongo/conectDB";
 import User from "../../lib/mongo/schema/userSchema";
 

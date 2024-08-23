@@ -1,7 +1,6 @@
-// src/app/admin/page.js
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]/route';
-import Overview from '../components/adminCompnents/Overview';
+import Overview from '../components/adminCompnents/OverView/Overview';
 import { redirect } from 'next/navigation';
 
 export default async function AdminPage() {
