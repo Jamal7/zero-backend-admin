@@ -30,7 +30,6 @@ export default function JobSeekersTable() {
     fetchJobSeekers();
   }, []);
   
-  const truncatedString = seeker._id.slice(0, 7);
 
   return (
     <div className="p-5 bg-white shadow-md rounded-lg w-[70%] m-5">

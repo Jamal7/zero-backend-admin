@@ -38,7 +38,6 @@ export default function JobSeekersTable() {
   if (error) {
     return <div>${process.env.NEXT_PUBLIC_API_URL} Error: {error} </div>;
   }
-  const truncatedString = seeker._id.slice(0, 7);
 
 
   return (
