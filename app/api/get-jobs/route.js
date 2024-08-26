@@ -3,11 +3,12 @@ import { NextResponse } from 'next/server';
 import { connectDb } from '../../lib/mongo/conectDB'; // Adjust path as necessary
 import Job from '../../lib/mongo/schema/jobSchema';
 
+
 export async function GET() {
-    await connectDb();
+    await connectDb(); // Ensure DB is connected
 
     try {
-        const jobs = await Job.find().populate('user'); // Populate user data if needed
+        const jobs = await Job.find().populate('user'); // Populate user data
         return NextResponse.json(jobs, { status: 200 });
     } catch (error) {
         console.error('Error fetching jobs:', error);
