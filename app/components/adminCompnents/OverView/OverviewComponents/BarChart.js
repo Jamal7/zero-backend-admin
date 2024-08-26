@@ -19,7 +19,8 @@ const data = [
 
 export default function BarCharts() {
   return (
-    <div style={{ padding: '20px' }}>
+
+    <div style={{ padding: '20px', background: "#fff", margin: "50px 0px 50px 0px", borderRadius:"10px" }}>
       <h3 style={{ textAlign: 'center' }}>Acquisition number change per month in 2020 years</h3>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data}>
@@ -33,5 +34,7 @@ export default function BarCharts() {
         </BarChart>
       </ResponsiveContainer>
     </div>
+
+
   );
 };

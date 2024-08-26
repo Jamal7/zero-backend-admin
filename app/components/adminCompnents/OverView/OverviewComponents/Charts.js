@@ -83,9 +83,9 @@ export default function Charts({
   filledRatio,
 }) {
   return (
-    <div style={{ padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ padding: '20px', background:"#fff", borderRadius:"10px",display:"flex", alignItems:"center", justifyContent:"center"  }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px',alignItems:'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center',justifyContent:"center",  }}>
           <CircularProgressBar 
             percentage={percentage} 
             color={color} 
