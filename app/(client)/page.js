@@ -1,14 +1,15 @@
-// app/auth/signin/page.js
 "use client";
-// app/auth/signin/page.js
+import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function SignIn() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false); // State to manage loading status
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when the form is submitted
     const email = e.target.email.value;
     const password = e.target.password.value;
 
@@ -17,6 +18,8 @@ export default function SignIn() {
       email,
       password,
     });
+
+    setLoading(false); // Set loading to false after the API call
 
     if (result.ok) {
       router.push("/admin");
@@ -57,9 +60,33 @@ export default function SignIn() {
           <div>
             <button
               type="submit"
-              className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+              className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 flex items-center justify-center"
+              disabled={loading} // Disable button when loading
             >
-              Sign In
+              {loading ? (
+                <svg
+                  className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8a8 8 0 01-8 8z"
+                  ></path>
+                </svg>
+              ) : (
+                "Sign In"
+              )}
             </button>
           </div>
         </form>
