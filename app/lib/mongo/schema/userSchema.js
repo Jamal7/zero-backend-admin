@@ -32,6 +32,21 @@ const userSchema = new Schema({
   imageUrl: {
     type: String,
     default: 'null',
+  },
+  status: {
+    type: String,
+    enum: ['active', 'inactive', 'hired'],
+    default: 'active',
+  },
+  jobIds: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Job',
+  }],
+  resetCode: {
+    type: String,
+  },
+  resetCodeExpiry: {
+    type: Date,
   }
 });
 

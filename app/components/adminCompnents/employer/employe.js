@@ -4,8 +4,12 @@ import edit from '../../../../public/icons/edit.svg';
 import del from '../../../../public/icons/delete.svg';
 
 import Image from 'next/image';
+
 export default function JobSeekersTable() {
   const [jobSeekers, setJobSeekers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [Error, setError] = useState();
+
   async function fetchJobSeekers() {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/employe-users`, {
@@ -13,11 +17,11 @@ export default function JobSeekersTable() {
           'Cache-Control': 'no-store',
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-  
+
       const data = await response.json();
       setJobSeekers(data);
     } catch (error) {
@@ -25,11 +29,38 @@ export default function JobSeekersTable() {
       setError(error.message); // Assuming you have a state to store errors
     }
   }
-  
+
   useEffect(() => {
     fetchJobSeekers();
   }, []);
-  
+
+  const handleStatusChange = async (userId, newStatus) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/update-user-status`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, status: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      // Update the local state to reflect the change in status
+      setJobSeekers((prevJobSeekers) =>
+        prevJobSeekers.map((seeker) =>
+          seeker._id === userId ? { ...seeker, status: newStatus } : seeker
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update user status:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="p-5 bg-white shadow-md rounded-lg w-[70%] m-5">
@@ -49,7 +80,7 @@ export default function JobSeekersTable() {
         </div>
         
         {/* Data Rows */}
-        {jobSeekers.length > 0 && jobSeekers?.map((seeker, index) => (
+        {jobSeekers.length > 0 && jobSeekers.map((seeker, index) => (
           <div key={index} className="flex p-3 bg-white border border-[#F0F0F0] rounded-md h-16 items-center">
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">14/01/2019</div> {/* Static Date as in your example */}
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">{seeker._id.slice(0, 7)}</div>
@@ -58,9 +89,16 @@ export default function JobSeekersTable() {
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">{seeker.email}</div> {/* Example username */}
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">{Math.floor(Math.random() * 15) + 1}</div> {/* Random Job Applied */}
             <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
-              <span className={`px-3 py-1 rounded-full text-white ${getStatusColor(seeker.status)}`}>
-                {seeker.status}
-              </span>
+              <select
+                className={`px-3 py-2 rounded-md text-white ${getStatusColor(seeker.status)}`}
+                value={seeker.status}
+                onChange={(e) => handleStatusChange(seeker._id, e.target.value)}
+                disabled={loading}
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="hired">Hired</option>
+              </select>
             </div>
             <div className="w-1/6 flex gap-4">
               <button className="text-yellow-500 hover:text-yellow-700"><Image src={edit}/></button>

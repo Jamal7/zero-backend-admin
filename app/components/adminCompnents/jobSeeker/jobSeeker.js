@@ -23,27 +23,55 @@ export default function JobSeekersTable() {
       setLoading(false);
     } catch (error) {
       console.error("Failed to fetch job seekers:", error);
+      setError(error.message);
+      setLoading(false);
     }
   }
   
   useEffect(() => {
     fetchJobSeekers();
-  }, []); // Fetches the data only once on component mount
-  
+  }, []);
+
+  const handleStatusChange = async (userId, newStatus) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/update-user-status`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, status: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      // Update the local state to reflect the change in status
+      setJobSeekers((prevJobSeekers) =>
+        prevJobSeekers.map((seeker) =>
+          seeker._id === userId ? { ...seeker, status: newStatus } : seeker
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update user status:", error);
+      setError("Failed to update user status.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>${process.env.NEXT_PUBLIC_API_URL} Error: {error} </div>;
+    return <div>Error: {error}</div>;
   }
-
 
   return (
     <div className="p-5 bg-white shadow-md rounded-lg w-[70%] m-5">
       <h1 className="text-base font-bold text-[#5C5C5C] mb-5">Job Seeker</h1>
-      <h1 className="text-base font-bold text-[#5C5C5C] mb-5">{process.env.NEXTAUTH_URL}</h1>
 
       <div className="flex flex-col space-y-2">
         {/* Header Row */}
@@ -66,13 +94,19 @@ export default function JobSeekersTable() {
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{seeker.email}</div>
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">{Math.floor(Math.random() * 15) + 1}</div> {/* Random Job Applied */}
             <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
-              <span className={`px-3 py-1 rounded-full text-white ${getStatusColor(seeker.status)}`}>
-                {seeker.status}
-              </span>
+              <select
+                className={`px-3 py-1 rounded-full text-white ${getStatusColor(seeker.status)}`}
+                value={seeker.status}
+                onChange={(e) => handleStatusChange(seeker._id, e.target.value)}
+                disabled={loading}
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
             </div>
             <div className="w-1/6 flex gap-4">
-            <button className="text-yellow-500 hover:text-yellow-700"><Image src={edit}/></button>
-            <button className="text-red-500 hover:text-red-700"><Image src={del}/></button>
+              <button className="text-yellow-500 hover:text-yellow-700"><Image src={edit}/></button>
+              <button className="text-red-500 hover:text-red-700"><Image src={del}/></button>
             </div>
           </div>
         ))}
@@ -96,8 +130,6 @@ function getStatusColor(status) {
       return 'bg-green-500';
     case 'inactive':
       return 'bg-red-500';
-    case 'hired':
-      return 'bg-blue-500';
     default:
       return 'bg-gray-500';
   }

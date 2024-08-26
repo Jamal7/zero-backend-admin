@@ -18,8 +18,8 @@
     "mongoose": "^8.5.2",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
+    "nodemailer": "^6.9.14",
     "react": "^18",
-    
     "react-dom": "^18",
     "recharts": "^2.12.7",
     "stream-to-buffer": "^0.1.0"
