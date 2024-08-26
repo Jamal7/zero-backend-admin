@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { connectDb } from '../../lib/mongo/conectDB'; // Adjust path as necessary
 import Job from '../../lib/mongo/schema/jobSchema';
-
+import User from '../../lib/mongo/schema/userSchema'; // Import User schema
 
 export async function GET() {
     await connectDb(); // Ensure DB is connected
