@@ -47,7 +47,10 @@ const userSchema = new Schema({
   },
   resetCodeExpiry: {
     type: Date,
-  }
+  },
+  interestKeywords: [{
+    type: String,
+  }]
 });
 
 // Create a Model
