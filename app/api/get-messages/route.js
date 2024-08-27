@@ -16,6 +16,7 @@ export async function GET(request) {
 
         // Find messages where the current user is either the sender or the receiver
         const messages = await Message.find({
+            jobId: jobId,
             $or: [
                 { senderId: userId },
                 { receiverId: userId }

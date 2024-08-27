@@ -22,6 +22,7 @@
     "react": "^18",
     "react-dom": "^18",
     "recharts": "^2.12.7",
+    "socket.io": "^4.7.5",
     "stream-to-buffer": "^0.1.0"
   },
   "devDependencies": {
