@@ -22,7 +22,7 @@
 // File: /app/api/get-jobs/route.js
 import { NextResponse } from 'next/server';
 import { connectDb } from '../../lib/mongo/conectDB'; // Adjust path as necessary
-import Job from '../../lib/mongo/schema/userSchema';
+import Job from '../../lib/mongo/schema/jobSchema';
 
 export async function GET() {
     await connectDb(); // Ensure DB is connected
