@@ -44,11 +44,11 @@ export default function AdminClientPage({ session }) {
           filledRatio={0.98} // Custom filled ratio
         />
         </div >
-        <div className="flex flex-row gap-5 px-5">
-         <div className="w-[75%]">
+        <div className="flex flex-row gap-5 px-5 py-10">
+         <div className="w-[70%]">
         <BarCharts />
          </div>
-         <div className="w-[25%]">
+         <div className="w-[30%]">
          <Revenue />
          </div>
         </div>

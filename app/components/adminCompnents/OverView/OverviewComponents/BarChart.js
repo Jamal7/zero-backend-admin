@@ -19,22 +19,29 @@ const data = [
 
 export default function BarCharts() {
   return (
-
-    <div style={{ padding: '20px', background: "#fff", margin: "50px 0px 50px 0px", borderRadius:"10px" }}>
-      <h3 style={{ textAlign: 'center' }}>Acquisition number change per month in 2020 years</h3>
+    <div style={{ padding: '20px', background: "#fff", margin: "50px 0px 50px 0px", borderRadius:"10px", position: 'relative' , }}>
+      
       <ResponsiveContainer width="100%" height={300}>
+        
+        <h3 className='text-left pb-5 mb-2 border-b'>Acquisition number change per month in 2020 years</h3>
+
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="1 1" />
+          <CartesianGrid strokeDasharray="1 1" vertical={false} /> {/* Disable vertical lines */}
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Legend />
+          <Legend 
+            wrapperStyle={{
+              position: 'absolute',
+              top: -50,
+              right: -276,
+            }}
+            iconType="rect" 
+          />
           <Bar dataKey="Income" fill="#5B8DD7" radius={[10, 10, 0, 0]} barSize={5} />
           <Bar dataKey="Users" fill="#ADC6EB" radius={[10, 10, 0, 0]} barSize={5} />
         </BarChart>
       </ResponsiveContainer>
     </div>
-
-
   );
-};
+}
