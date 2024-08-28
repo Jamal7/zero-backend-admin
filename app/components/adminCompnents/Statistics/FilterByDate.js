@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './FilterByDate.css'; // Custom styles to match the design
-// Inside AdminClientPage component
-
 
 export default function FilterByDate({ onDateChange }) {
   const [date, setDate] = useState(new Date());
@@ -15,8 +13,8 @@ export default function FilterByDate({ onDateChange }) {
   };
 
   return (
-    <div style={{ padding: '20px', background: "#fff", borderRadius:"10px" }}>
-      <h3 className='text-left pb-5 mb-10 border-b'>Filter By Date</h3>
+    <div style={{ padding: '20px', background: "#fff", borderRadius:"10px",}}>
+      <h3 className='text-center font-[700] text-[22px] leading-[21px] pb-5 mt-5 '>Filter By Date</h3>
       <div className="calendar-container">
         <Calendar 
           onChange={handleDateChange} 

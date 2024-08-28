@@ -1,42 +1,20 @@
 'use client';
-import React, { useState } from 'react';
-import WeeklyStatistics from './WeeklyStatistics';
-import FilterByDate from './FilterByDate';
-import WeeklyProgress from './WeeklyProgress';
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const data = [
-  { name: 'Monday', Score: 40 },
-  { name: 'Tuesday', Score: 50 },
-  { name: 'Wednesday', Score: 20 },
-  { name: 'Thursday', Score: 60 },
-  { name: 'Friday', Score: 45 },
-  { name: 'Saturday', Score: 50 },
-  { name: 'Sunday', Score: 30 },
-];
-
-export default function AdminClientPage() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [weeklyData, setWeeklyData] = useState(data);
-  const [progress, setProgress] = useState(82);
-
-  const handleDateChange = (newDate) => {
-    setSelectedDate(newDate);
-
-    // Update the data and progress based on the selected date
-    // Here you would add logic to fetch or calculate new data and progress
-    // For example:
-    const newData = data; // Update this based on your logic
-    const newProgress = 82; // Update this based on your logic
-
-    setWeeklyData(newData);
-    setProgress(newProgress);
-  };
-
+export default function WeeklyStatistics({ data }) {
   return (
-    <div className="admin-client-page">
-      <FilterByDate onDateChange={handleDateChange} />
-      <WeeklyStatistics data={weeklyData} />
-      <WeeklyProgress progress={progress} />
+    <div style={{ padding: '20px 60px 20px 20px', background: "#fff", borderRadius:"10px", position: 'relative' }}>
+      <h3 className='text-left p-5 mb-10 border-b'>Weekly Statistics</h3>
+      <ResponsiveContainer width="100%" height={380}>
+        <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="Score" fill="#5B8DD7" radius={[10, 10, 0, 0]} barSize={15} />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }
