@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
@@ -19,11 +19,11 @@ const data = [
 
 export default function BarCharts() {
   return (
-    <div style={{ padding: '20px', background: "#fff", margin: "50px 0px 50px 0px", borderRadius:"10px", position: 'relative' , }}>
+    <div style={{ padding: '40px 50px 100px 0px', background: "#fff",  borderRadius:"10px", position: 'relative' ,}}>
       
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={300} >
         
-        <h3 className='text-left pb-5 mb-2 border-b'>Acquisition number change per month in 2020 years</h3>
+        <h3 className='text-left pb-5 ml-10 mb-10 border-b'>Acquisition number change per month in 2020 years</h3>
 
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="1 1" vertical={false} /> {/* Disable vertical lines */}
@@ -33,10 +33,10 @@ export default function BarCharts() {
           <Legend 
             wrapperStyle={{
               position: 'absolute',
-              top: -50,
-              right: -276,
+              top: -86,
+              right: -275,
             }}
-            iconType="rect" 
+            iconType="circle"  // Changed from "rect" to "circle"
           />
           <Bar dataKey="Income" fill="#5B8DD7" radius={[10, 10, 0, 0]} barSize={5} />
           <Bar dataKey="Users" fill="#ADC6EB" radius={[10, 10, 0, 0]} barSize={5} />
