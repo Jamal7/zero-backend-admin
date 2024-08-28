@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import { connectDb } from "../../lib/mongo/connectDB";
+import { connectDb } from "../../lib/mongo/conectDB";
 import Message from "../../lib/mongo/schema/messageSchema";
 import { NextResponse } from "next/server";
 
