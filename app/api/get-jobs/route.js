@@ -32,6 +32,7 @@ export async function GET() {
         // Fetch jobs and populate the 'user' field with the userName from the User collection
         const jobs = await Job.find().populate({
             path: 'user', // Correct field name to populate
+            model: User, 
             select: 'userName', // Only select the userName field from the User model
         });
 
