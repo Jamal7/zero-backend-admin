@@ -26,7 +26,7 @@ export default function AdminClientPage({ session }) {
                 <Topbar />
                 <div>
                 <div >
-                    <WeeklyStatistics data={weeklyData} />
+                    {/* <WeeklyStatistics data={weeklyData} /> */}
                 </div>
                 <div>
                     <FilterByDate onDateChange={handleDateChange} />
