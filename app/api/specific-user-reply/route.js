@@ -6,18 +6,17 @@ export async function POST(request) {
     await connectDb();
 
     try {
-        const { senderId, receiverId, jobId, text, replyTo } = await request.json(); // Add replyTo to the destructuring
+        const { senderId, receiverId, text, replyTo } = await request.json(); // No jobId required
 
         // Validate input
-        if (!senderId || !receiverId || !jobId || !text) {
-            return NextResponse.json({ error: 'Sender ID, receiver ID, job ID, and text are required.' }, { status: 400 });
+        if (!senderId || !receiverId || !text) {
+            return NextResponse.json({ error: 'Sender ID, receiver ID, and text are required.' }, { status: 400 });
         }
 
         // Create a new message or reply
         const newMessage = new Message({
             senderId,
             receiverId,
-            jobId, // Include jobId when creating the message
             text,
             replyTo: replyTo || null, // Include replyTo if it's provided
             createdAt: new Date()

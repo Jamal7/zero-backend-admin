@@ -9,18 +9,17 @@ export async function GET(request) {
         // Extract the query parameters
         const { searchParams } = new URL(request.url);
         const userId = searchParams.get('userId');
-        const jobId = searchParams.get('jobId'); // Extract the jobId from the query parameters
+        const otherUserId = searchParams.get('otherUserId'); // Extract the other user's ID
 
-        if (!userId || !jobId) {
-            return NextResponse.json({ error: 'User ID and Job ID are required.' }, { status: 400 });
+        if (!userId || !otherUserId) {
+            return NextResponse.json({ error: 'User ID and Other User ID are required.' }, { status: 400 });
         }
 
-        // Find messages where the current user is either the sender or the receiver and the jobId matches
+        // Find messages between the logged-in user and the other user
         const messages = await Message.find({
-            jobId: jobId, // Match the jobId
             $or: [
-                { senderId: userId },
-                { receiverId: userId }
+                { senderId: userId, receiverId: otherUserId },
+                { senderId: otherUserId, receiverId: userId }
             ]
         }).sort({ createdAt: 1 }); // Sort messages by createdAt
 
