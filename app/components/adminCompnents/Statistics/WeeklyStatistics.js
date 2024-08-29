@@ -5,7 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 export default function WeeklyStatistics({ data }) {
   return (
     <div style={{ padding: '20px 60px 20px 20px', background: "#fff", borderRadius:"10px", position: 'relative' }}>
-      <h3 className='text-left p-5 mb-10 border-b'>Weekly Statistics</h3>
+      <h3 className='text-left p-5 mb-10 border-b text-[22px] font-[700]'>Weekly Statistics</h3>
       <ResponsiveContainer width="100%" height={380}>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
