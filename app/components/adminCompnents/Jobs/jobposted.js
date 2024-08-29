@@ -46,14 +46,14 @@ export default function JobPosted() {
         <div className="p-5 bg-white shadow-md rounded-lg w-full m-5">
             <h1 className="text-lg font-bold text-[#5C5C5C] mb-5">Job Posted</h1>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto ">
                 {/* Header Row */}
-                <div className="flex p-3 font-semibold bg-[#F9FAFB] rounded-t-md">
-                    <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Date</div>
-                    <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Employer ID</div>
-                    <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Employer Name</div>
-                    <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">User Applied</div>
-                    <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">User Shortlisted</div>
+                <div className="flex py-10 px-3 font-semibold  rounded-t-md">
+                    <div className="w-[16.6%] text-[#858585] text-xs leading-5 font-semibold">Date</div>
+                    <div className="w-[16.6%] text-[#858585] text-xs leading-5 font-semibold">Employer ID</div>
+                    <div className="w-[16.6%] text-[#858585] text-xs leading-5 font-semibold">Employer Name</div>
+                    <div className="w-[16.6%] text-[#858585] text-xs leading-5 font-semibold">User Applied</div>
+                    <div className="w-[16.6%] text-[#858585] text-xs leading-5 font-semibold">User Shortlisted</div>
                     <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">Action</div>
                 </div>
 
@@ -62,24 +62,24 @@ export default function JobPosted() {
                     jobSeekers.map((seeker, index) => (
                         <div
                             key={index}
-                            className="flex p-3 border-t border-[#F0F0F0] items-center"
+                            className="flex p-3 border border-[#F0F0F0] rounded-2xl  items-center"
                         >
-                            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">14/01/2019</div>
+                            <div className="w-[16.6%] text-[#858585] text-xs font-normal leading-4">14/01/2019</div>
                             {/* Static Date as in your example */}
-                            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
+                            <div className="w-[16.6%] text-[#858585] text-xs font-normal leading-4">
                                 {seeker._id.slice(0, 7)}
                             </div>
-                            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
+                            <div className="w-[16.6%] text-[#858585] text-xs font-normal leading-4">
                                 {seeker.userName}
                             </div>
-                            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
+                            <div className="w-[16.6%] text-[#858585] text-xs font-normal leading-4">
                                 {Math.floor(Math.random() * 15) + 1}
                             </div>
-                            <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
+                            <div className="w-[16.6%] text-[#858585] text-xs font-normal leading-4">
                                 {Math.floor(Math.random() * 15) + 1}
                             </div>
-                            <div className="w-1/6 flex items-center gap-2">
-                            <button className="p-2 text-yellow-500 hover:text-yellow-700">
+                            <div className="w-[16.6%] flex items-center gap-2">
+                            <button className="p-2">
                                     <Image src={messages} alt="Edit" width={16} height={16} />
                                 </button>
                                 <button className="p-2 text-yellow-500 hover:text-yellow-700">

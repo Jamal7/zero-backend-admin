@@ -9,7 +9,9 @@ export default function jobs() {
         <Sidebar />
         <div className="flex flex-col w-full">
           <Topbar />
+          <div className='flex flex-row w-[80%]'>
           <Jobposted />
+          </div>
         </div>
       </div>
     </>
