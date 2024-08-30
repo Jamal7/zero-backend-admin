@@ -36,7 +36,40 @@ const renderCustomLegend = (props) => {
     </ul>
   );
 };
+const CustomGrid = (props) => {
+  const { x, y, width, height, horizontalPoints, verticalPoints } = props;
 
+  return (
+    <g>
+      {/* Render horizontal lines excluding the one at y=0 */}
+      {horizontalPoints.map((point, index) => (
+        point !== 0 && (
+          <line
+            key={`hline-${index}`}
+            x1={x}
+            x2={x + width}
+            y1={point}
+            y2={point}
+            stroke="#e0e0e0"
+            strokeDasharray="4 4"
+          />
+        )
+      ))}
+      {/* Render vertical lines */}
+      {verticalPoints.map((point, index) => (
+        <line
+          key={`vline-${index}`}
+          x1={point}
+          x2={point}
+          y1={y}
+          y2={y + height}
+          stroke="#e0e0e0"
+          strokeDasharray="4 4"
+        />
+      ))}
+    </g>
+  );
+};
 export default function BarCharts() {
   return (
     <div style={{ padding: '40px 50px 100px 0px', background: "#fff", borderRadius:"10px", position: 'relative' }}>
@@ -44,9 +77,9 @@ export default function BarCharts() {
         <h3 className='text-left pb-5 ml-10 mb-10 border-b text-[14px] font-[600] leading-[24px]'>Acquisition number change per month in 2020 years</h3>
 
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="4 4" vertical={false} /> {/* Dashed line */}
-          <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: 'transparent' }} />
-          <YAxis tickLine={false} axisLine={{ stroke: 'transparent' }} />
+        <CartesianGrid strokeDasharray="4 4" vertical={false} content={<CustomGrid />} />
+        <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: 'transparent' }} />
+          <YAxis tickLine={false} axisLine={false}  />
           <Tooltip />
           <Legend 
             content={renderCustomLegend}
