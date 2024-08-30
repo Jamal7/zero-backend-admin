@@ -13,8 +13,7 @@ export default function AdminClientPage({ session }) {
       <SideBar />
       <div className="flex flex-col w-full">
         <Topbar />
-        <h1>Welcome to Zero admin, {session?.user?.name}!</h1>
-        <div className="flex justify-left gap-5 ">
+        <div className="flex justify-left gap-5 mt-10 ">
           <Charts
             labelText="Total Number of App Downloads"
             percentage={18}
