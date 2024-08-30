@@ -3,7 +3,7 @@ import React from 'react';
 
 const GradientChart = () => {
   return (
-    <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-md bg-white">
+    <div className="relative h-10 w-full overflow-hidden rounded-lg  bg-white">
       <svg
         className="absolute inset-0 w-full h-full"
         viewBox="0 0 200 100"

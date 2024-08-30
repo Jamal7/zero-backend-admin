@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-
+import MovingCart from './MovingGradientChart';
 const CircularProgressBar = ({ 
   percentage, 
   color, 
@@ -145,6 +145,7 @@ export default function Charts({
             }}>
               Total Number<br/> of Sales
             </h4>
+            <div className='flex'></div>
             <span style={{ 
               color:"#3D415C", 
               fontSize: '14px',
@@ -170,6 +171,7 @@ export default function Charts({
                 />
               </svg>
             </span>
+            <div className='h-10'><MovingCart/></div>
             
           </div>
         </div>
