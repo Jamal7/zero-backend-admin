@@ -25,3 +25,16 @@ body {
     text-wrap: balance;
   }
 }
+
+@keyframes moveGradient {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.moving-gradient {
+  animation: moveGradient 5s infinite linear;
+}

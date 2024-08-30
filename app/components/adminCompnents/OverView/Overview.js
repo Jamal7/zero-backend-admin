@@ -6,6 +6,7 @@ import Topbar from "../topbar/topbar";
 import Charts from "../OverView/OverviewComponents/Charts.js";
 import BarCharts from "./OverviewComponents/BarChart";
 import Revenue from "./OverviewComponents/Revenue";
+import MovingGradientChart from "./OverviewComponents/MovingGradientChart";
 
 export default function AdminClientPage({ session }) {
   return (
@@ -42,6 +43,7 @@ export default function AdminClientPage({ session }) {
             textColor="#333"
             filledRatio={0.98} // Custom filled ratio
           />
+
         </div >
         <div className="flex flex-row gap-5 py-12 px-5 ">
           <div className="w-[70%]">
