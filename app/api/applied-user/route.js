@@ -4,28 +4,28 @@ import User from "@/app/lib/mongo/schema/userSchema";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST (request) {
+export async function POST(request) {
     await connectDb();
     try {
-        const body = await request.json()
-        const {userId, jobId} = body;
-         const works = await Job.find({_id: jobId, userapplied:{$in: userId}})
-        if(works.length > 0) {
-            return new Response( works);
-        } else {
-            await User.updateOne(
-                {_id:userId},
-                {$push: { jobapllied: jobId}}
-            )
-            await Job.updateOne(
-                {_id:jobId},
-                {$push: { userapplied: userId}}
-            )
-            const updateuser = await Job.findById({_id: jobId})
-            return new Response (updateuser)
-        } 
+      const { userId, jobId } = await request.json();
+  
+      // Check if the user has already applied for the job
+      const existingApplication = await Job.findOne({ _id: jobId, userapplied: userId });
+  
+      if (existingApplication) {
+        return NextResponse.json({ message: "User already applied for this job" });
+      }
+  
+      // Update both User and Job with the applied job and user
+      await Promise.all([
+        User.updateOne({ _id: userId }, { $push: { jobapllied: jobId } }),
+        Job.updateOne({ _id: jobId }, { $push: { userapplied: userId } }),
+      ]);
+  
+      const updatedJob = await Job.findById(jobId);
+      return NextResponse.json(updatedJob);
+  
+    } catch (error) {
+      return NextResponse.json({ error: error.message });
     }
-        catch (error) {
-            return NextResponse.json({error: error})
-        }
-}
+  }
