@@ -44,9 +44,9 @@ export default function BarCharts() {
         <h3 className='text-left pb-5 ml-10 mb-10 border-b text-[14px] font-[600] leading-[24px]'>Acquisition number change per month in 2020 years</h3>
 
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="1 1" vertical={false} />
-          <XAxis dataKey="name" tickLine="false" axisLine={{stroke: 'transparent'}}/>
-          <YAxis  tickLine="false" axisLine={{stroke: 'transparent'}}/>
+          <CartesianGrid strokeDasharray="4 4" vertical={false} /> {/* Dashed line */}
+          <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: 'transparent' }} />
+          <YAxis tickLine={false} axisLine={{ stroke: 'transparent' }} />
           <Tooltip />
           <Legend 
             content={renderCustomLegend}
@@ -56,8 +56,8 @@ export default function BarCharts() {
               right: 6,
             }}
           />
-          <Bar dataKey="Income" fill="#5B8DD7" radius={[10, 10, 0, 0]} barSize={5} />
-          <Bar dataKey="Users" fill="#ADC6EB" radius={[10, 10, 0, 0]} barSize={5} />
+          <Bar dataKey="Income" fill="#5B8DD7" radius={[10, 10, 10, 10]} barSize={5} />
+          <Bar dataKey="Users" fill="#ADC6EB" radius={[10, 10, 10, 10]} barSize={5} />
         </BarChart>
       </ResponsiveContainer>
     </div>
