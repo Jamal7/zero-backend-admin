@@ -50,7 +50,15 @@ const userSchema = new Schema({
   },
   interestKeywords: [{
     type: String,
-  }]
+  }],
+  jobapllied: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Job'
+    }],
+  jobshortlist: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Job'
+  }]  
 });
 
 // Create a Model

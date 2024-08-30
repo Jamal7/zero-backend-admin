@@ -36,7 +36,15 @@ const jobSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-  }
+  },
+  userapplied: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  usershortlist: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 }, {
   timestamps: true, // Automatically add createdAt and updatedAt fields
 });
