@@ -1,6 +1,7 @@
 'use client'
 import React from 'react';
 import MovingCart from './MovingGradientChart';
+
 const CircularProgressBar = ({ 
   percentage, 
   color, 
@@ -8,15 +9,15 @@ const CircularProgressBar = ({
   filledRatio,
 }) => {
   const remainingRatio = 1 - filledRatio;
-  const radius = 50;
-  const strokeWidth = 15;
+  const radius = 70; // Increased radius
+  const strokeWidth = 20; // Increased stroke width
   const normalizedRadius = radius - strokeWidth / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
 
   return (
     <svg
       height={radius * 2}
-      width={radius * 2}
+      width={radius * 2.1}
     >
       <circle
         stroke="#e6e6e6"
@@ -61,8 +62,8 @@ const CircularProgressBar = ({
         textAnchor="middle"
         dy=".3em"
         fill={textColor}
-        fontSize="20px"
-        fontWeight="bold"
+        fontSize="20px" // Increased font size
+        fontWeight="400"
       >
         {`${percentage}%`}
       </text>
@@ -82,20 +83,24 @@ export default function Charts({
   return (
     <div style={{ 
       position: 'relative', 
-      padding:"40px",
+      padding:"10px 20px",
       background: "#fff", 
       borderRadius: "10px",
       display: "flex", 
+      flex: 1, 
       alignItems: "center", 
-      justifyContent: "center", 
-      marginLeft: "20px", 
+      justifyContent: "space-around", 
+      // margin: "20px", 
+      boxSizing: "border-box"
     }}>
       {/* Options Icon at the Top Right */}
       <div style={{ 
         position: 'absolute', 
         top: '10px', 
         right: '5px', 
-        cursor: 'pointer' 
+        height: '20px',
+        // width: '200px',
+        cursor: 'pointer' ,
       }}>
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
@@ -121,11 +126,13 @@ export default function Charts({
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center', 
+        width: "100%",
       }}>
         <div style={{ 
           display: 'flex', 
           alignItems: 'center', 
-          justifyContent: "center" 
+          justifyContent: "space-between",
+          // width: '500px'
         }}>
           <CircularProgressBar 
             percentage={percentage} 
@@ -134,8 +141,10 @@ export default function Charts({
             filledRatio={filledRatio}
           />
           <div style={{ 
-            marginLeft: '40px', 
-            textAlign: 'left' 
+            // marginLeft: '40px', 
+            width: '40%',
+            textAlign: 'left', 
+            marginTop: '10px',
           }}>
             <h4 style={{ 
               margin: 0, 
@@ -143,18 +152,23 @@ export default function Charts({
               fontWeight: '700', 
               color:"#5A5E7C", 
             }}>
-              Total Number<br/> of Sales
+              Total Number of Sales
             </h4>
-            <div className='flex'></div>
-            <span style={{ 
-              color:"#3D415C", 
-              fontSize: '14px',
-              fontWeight: '400', 
-              display: 'flex', 
-              alignItems: 'center',
-              paddingTop:'10px', 
+            <div style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: '10px'
             }}>
-              {changeText}
+              <span style={{ 
+                color:"#3D415C", 
+                fontSize: '14px',
+                fontWeight: '400',
+                display: 'flex',
+                alignItems: 'end',
+                // marginBottom: '18px',
+              }}>
+                {changeText}
+              
               {/* Dropdown Icon */}
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -170,9 +184,11 @@ export default function Charts({
                   clipRule="evenodd" 
                 />
               </svg>
-            </span>
-            <div className='h-10'><MovingCart/></div>
-            
+              </span>
+              <MovingCart style={{ 
+                marginLeft: '10px',
+              }}/>
+            </div>
           </div>
         </div>
       </div>

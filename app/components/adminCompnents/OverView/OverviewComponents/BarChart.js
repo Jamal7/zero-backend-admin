@@ -17,26 +17,44 @@ const data = [
   { name: 'Dec', Income: 20, Users: 25 },
 ];
 
+const renderCustomLegend = (props) => {
+  const { payload } = props;
+
+  return (
+    <ul style={{ listStyleType: 'none', margin: 0, padding: 0, display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
+      {payload.map((entry, index) => {
+        const isIncome = entry.value === 'Income';
+        return (
+          <li key={`item-${index}`} style={{ display: 'flex', alignItems: 'center', color: isIncome ? '#3D415C' : '#5A5E7C' }}>
+            <svg width="12" height="12" style={{ marginRight: 5 }}>
+              <circle cx="6" cy="6" r="6" fill={entry.color} />
+            </svg>
+            {entry.value}
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+
 export default function BarCharts() {
   return (
-    <div style={{ padding: '40px 50px 100px 0px', background: "#fff",  borderRadius:"10px", position: 'relative' ,}}>
-      
-      <ResponsiveContainer width="100%" height={300} >
-        
-        <h3 className='text-left pb-5 ml-10 mb-10 border-b'>Acquisition number change per month in 2020 years</h3>
+    <div style={{ padding: '40px 50px 100px 0px', background: "#fff", borderRadius:"10px", position: 'relative' }}>
+      <ResponsiveContainer width="100%" height={300}>
+        <h3 className='text-left pb-5 ml-10 mb-10 border-b text-[14px] font-[600] leading-[24px]'>Acquisition number change per month in 2020 years</h3>
 
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="1 1" vertical={false} /> {/* Disable vertical lines */}
-          <XAxis dataKey="name" />
-          <YAxis />
+          <CartesianGrid strokeDasharray="1 1" vertical={false} />
+          <XAxis dataKey="name" tickLine="false" axisLine={{stroke: 'transparent'}}/>
+          <YAxis  tickLine="false" axisLine={{stroke: 'transparent'}}/>
           <Tooltip />
           <Legend 
+            content={renderCustomLegend}
             wrapperStyle={{
               position: 'absolute',
               top: -86,
-              right: -275,
+              right: 6,
             }}
-            iconType="circle"  // Changed from "rect" to "circle"
           />
           <Bar dataKey="Income" fill="#5B8DD7" radius={[10, 10, 0, 0]} barSize={5} />
           <Bar dataKey="Users" fill="#ADC6EB" radius={[10, 10, 0, 0]} barSize={5} />

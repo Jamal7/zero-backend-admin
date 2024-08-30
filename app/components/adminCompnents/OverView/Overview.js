@@ -14,7 +14,7 @@ export default function AdminClientPage({ session }) {
       <SideBar />
       <div className="flex flex-col w-full">
         <Topbar />
-        <div className="flex justify-left gap-5 mt-10 ">
+        <div className="flex justify-left gap-5 mt-10 px-5">
           <Charts
             labelText="Total Number of App Downloads"
             percentage={18}
@@ -45,7 +45,7 @@ export default function AdminClientPage({ session }) {
           />
 
         </div >
-        <div className="flex flex-row gap-5 py-12 px-5 ">
+        <div className="flex flex-row gap-5 py-5 px-5 ">
           <div className="w-[70%]">
             <BarCharts />
           </div>
