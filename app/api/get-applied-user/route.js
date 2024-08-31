@@ -32,13 +32,16 @@ export async function GET(request) {
         },
       },
       {
+        $unwind: "$appliedJobs" // Unwind the appliedJobs array to create a separate document for each job
+      },
+      {
         $project: {
           userName: 1,
           email: 1,
+          _id: 1,
           imageUrl: 1, // Include the user's image URL
-          jobapllied: 1,
-          "appliedJobs._id": 1,
-          "appliedJobs.jobTitle": 1, // Assuming 'jobTitle' is the field for the job's name
+          "appliedJobs.jobTitle": 1, // Include job titles from appliedJobs
+          "appliedJobs._id": 1, // Include job IDs from appliedJobs
         },
       },
     ]);
