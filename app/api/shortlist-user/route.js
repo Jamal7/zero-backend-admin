@@ -13,10 +13,10 @@ export async function POST(request) {
       const user = await User.findOne({ _id: userId, jobshortlist: jobId });
       const job = await Job.findOne({ _id: jobId, usershortlist: userId });
   
-      if (user || job) {
-        // User is already shortlisted for this job
-        return NextResponse.json({ message: "User is already shortlisted for this job." });
-      }
+    //   if (user || job) {
+    //     // User is already shortlisted for this job
+    //     return NextResponse.json({ message: "User is already shortlisted for this job." });
+    //   }
   
       // Step 2: If not shortlisted, proceed with updating the user and job documents
       await User.updateOne(
