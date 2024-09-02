@@ -70,7 +70,7 @@ export default function JobSeekersTable() {
 
   return (
     <div className="p-5 bg-white shadow-md rounded-lg w-[70%] m-5">
-      <h1 className="text-base font-bold text-[#5C5C5C] mb-5">Employee</h1>
+      <h1 className="text-base font-bold text-[#5C5C5C] mb-5">Employer</h1>
 
       <div className="flex flex-col space-y-2">
         {/* Header Row */}
@@ -130,7 +130,7 @@ export default function JobSeekersTable() {
               </div>
               <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
                 {/* {Math.floor(Math.random() * 15) + 1} */}
-                {seeker.jobapllied.length}
+                {seeker.jobapplied.length}
               </div>{" "}
               {/* Random Job Applied */}
               <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
