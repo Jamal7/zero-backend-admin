@@ -178,6 +178,6 @@ function getStatusColor(status) {
     case "hired":
       return "bg-blue-500";
     default:
-      return "bg-gray-500";
+      return "bg-green-500";
   }
 }

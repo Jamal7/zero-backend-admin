@@ -185,6 +185,6 @@ function getStatusColor(status) {
     case "inactive":
       return "bg-red-500";
     default:
-      return "bg-gray-500";
+      return "bg-green-500";
   }
 }
