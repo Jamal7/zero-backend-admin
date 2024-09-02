@@ -72,9 +72,9 @@ const CustomGrid = (props) => {
 };
 export default function BarCharts() {
   return (
-    <div style={{ padding: '40px 50px 100px 0px', background: "#fff", borderRadius:"10px", position: 'relative' }}>
+   <div className="p-[40px_50px_100px_0] bg-white rounded-[10px] relative">
       <ResponsiveContainer width="100%" height={300}>
-        <h3 className='text-left pb-5 ml-10 mb-10 border-b text-[14px] font-[600] leading-[24px]'>Acquisition number change per month in 2020 years</h3>
+        <h3 className='md:text-left text-center pb-5 ml-10 mb-10 border-b text-[14px] font-[600] leading-[24px]'>Acquisition number change per month in 2020 years</h3>
 
         <BarChart data={data}>
         <CartesianGrid strokeDasharray="4 4" vertical={false} content={<CustomGrid />} />

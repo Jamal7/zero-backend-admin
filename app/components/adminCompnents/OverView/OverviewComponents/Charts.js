@@ -81,34 +81,16 @@ export default function Charts({
   filledRatio,
 }) {
   return (
-    <div style={{ 
-      position: 'relative', 
-      padding:"10px 20px",
-      background: "#fff", 
-      borderRadius: "10px",
-      display: "flex", 
-      flex: 1, 
-      alignItems: "center", 
-      justifyContent: "space-around", 
-      // margin: "20px", 
-      boxSizing: "border-box"
-    }}>
+    <div className="relative p-12 bg-white rounded-lg flex flex-col sm:flex-row items-center justify-around box-border">
       {/* Options Icon at the Top Right */}
-      <div style={{ 
-        position: 'absolute', 
-        top: '10px', 
-        right: '5px', 
-        height: '20px',
-        // width: '200px',
-        cursor: 'pointer' ,
-      }}>
+      <div className="absolute top-2.5 right-7 h-5 cursor-pointer">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           fill="currentColor" 
           viewBox="0 0 20 20" 
           width="50px" 
           height="25px" 
-          style={{ color: "#CED0DE" }}
+          className="text-gray-300"
         >
           <path 
             d="M5 10C5 8.89543 5.89543 8 7 8C8.10457 8 9 8.89543 9 10C9 11.1046 8.10457 12 7 12C5.89543 12 5 11.1046 5 10Z" 
@@ -122,72 +104,39 @@ export default function Charts({
         </svg>
       </div>
 
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        width: "100%",
-      }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: "space-between",
-          // width: '500px'
-        }}>
+      <div className="flex flex-col sm:flex-row justify-between items-center w-full">
+        <div className="flex flex-col sm:flex-row items-center justify-between">
           <CircularProgressBar 
             percentage={percentage} 
             color={color} 
             textColor={textColor}
             filledRatio={filledRatio}
           />
-          <div style={{ 
-            // marginLeft: '40px', 
-            width: '40%',
-            textAlign: 'left', 
-            marginTop: '10px',
-          }}>
-            <h4 style={{ 
-              margin: 0, 
-              fontSize: '16px', 
-              fontWeight: '700', 
-              color:"#5A5E7C", 
-            }}>
+          <div className="w-full sm:w-2/5 text-left mt-2.5">
+            <h4 className="m-0 text-lg font-bold text-gray-700">
               Total Number of Sales
             </h4>
-            <div style={{
-              display: 'flex',
-              alignItems: 'baseline',
-              gap: '10px'
-            }}>
-              <span style={{ 
-                color:"#3D415C", 
-                fontSize: '14px',
-                fontWeight: '400',
-                display: 'flex',
-                alignItems: 'end',
-                // marginBottom: '18px',
-              }}>
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-gray-800 text-sm font-normal flex items-end">
                 {changeText}
               
-              {/* Dropdown Icon */}
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 20 20" 
-                fill="currentColor" 
-                width="14px" 
-                height="14px" 
-                style={{ marginLeft: '5px', color:"#3D415C" }}
-              >
-                <path 
-                  fillRule="evenodd" 
-                  d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" 
-                  clipRule="evenodd" 
-                />
-              </svg>
+                {/* Dropdown Icon */}
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor" 
+                  width="14px" 
+                  height="14px" 
+                  className="ml-1.25 text-gray-800"
+                >
+                  <path 
+                    fillRule="evenodd" 
+                    d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" 
+                    clipRule="evenodd" 
+                  />
+                </svg>
               </span>
-              <MovingCart style={{ 
-                marginLeft: '10px',
-              }}/>
+              <MovingCart className="ml-2.5"/>
             </div>
           </div>
         </div>
