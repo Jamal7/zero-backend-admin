@@ -13,6 +13,7 @@ export async function POST(request) {
       const existingApplication = await Job.findOne({ _id: jobId, userapplied: userId });
   
       if (existingApplication) {
+        console.log('NextRequest ',NextRequest);
         return NextResponse.json({ message: "User already applied for this job" });
       }
   
