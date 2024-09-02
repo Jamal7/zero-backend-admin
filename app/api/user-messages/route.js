@@ -19,7 +19,7 @@ export async function GET(request) {
                 { senderId: userId },
                 { receiverId: userId }
             ]
-        }).populate('senderId receiverId', 'userName email'); // Populate user details
+        }).populate('senderId receiverId', 'userName email imageUrl'); // Populate user details
 
         if (!messages.length) {
             return NextResponse.json({ messages: [] }, { status: 200 });
