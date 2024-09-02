@@ -9,6 +9,9 @@ export async function GET() {
     // Aggregate to get the total number of jobs posted per user and count of jobapllied
     const result = await User.aggregate([
       {
+        $match: { employer: { $regex: '^seeker$', $options: 'i' } } // Filter users where employer matches "seeker" (case-insensitive)
+      },
+      {
         $lookup: {
           from: 'jobs', // Name of the Job collection
           localField: '_id', // User's ID in the User collection
