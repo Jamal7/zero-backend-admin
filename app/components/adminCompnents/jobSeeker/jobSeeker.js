@@ -136,7 +136,6 @@ export default function JobSeekersTable() {
               <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
                 {/* {Math.floor(Math.random() * 15) + 1} */}
                 {seeker.jobAppliedCount}
-
               </div>{" "}
               {/* Random Job Applied */}
               <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
@@ -144,14 +143,22 @@ export default function JobSeekersTable() {
                   className={`px-3 py-2 rounded-md text-white ${getStatusColor(
                     seeker.status
                   )}`}
-                  value={seeker.status}
+                  value={seeker.status} // The value reflects the current status of the user
                   onChange={(e) =>
                     handleStatusChange(seeker._id, e.target.value)
                   }
                   disabled={loading}
                 >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
+                  {/* Set default value based on the current status */}
+                  <option value="active" selected={seeker.status === "active"}>
+                    Active
+                  </option>
+                  <option
+                    value="inactive"
+                    selected={seeker.status === "inactive"}
+                  >
+                    Inactive
+                  </option>
                 </select>
               </div>
               <div className="w-1/6 flex gap-4">

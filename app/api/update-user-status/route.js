@@ -3,13 +3,17 @@ import { connectDb } from '../../lib/mongo/conectDB';
 import User from '../../lib/mongo/schema/userSchema';
 
 export async function POST(request) {
-  await connectDb();
-
   try {
+    await connectDb();
+
     const { userId, status } = await request.json();
 
-    if (!userId || !status) {
-      return NextResponse.json({ error: 'User ID and status are required.' }, { status: 400 });
+    if (!userId) {
+      return NextResponse.json({ error: 'User ID is required.' }, { status: 400 });
+    }
+    
+    if (!status) {
+      return NextResponse.json({ error: 'Status is required.' }, { status: 400 });
     }
 
     const validStatuses = ['active', 'inactive', 'hired'];
@@ -25,7 +29,7 @@ export async function POST(request) {
     user.status = status;
     await user.save();
 
-    return NextResponse.json({ message: 'Status updated successfully' }, { status: 200 });
+    return NextResponse.json({ message: 'Status updated successfully', user }, { status: 200 }); // Return updated user
   } catch (error) {
     console.error('Error updating user status:', error);
     return NextResponse.json({ error: 'Server error. Please try again later.' }, { status: 500 });
