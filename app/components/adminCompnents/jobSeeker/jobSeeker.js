@@ -94,7 +94,7 @@ export default function JobSeekersTable() {
             User Email
           </div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">
-            Job Post
+            Job Applied
           </div>
           <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">
             Status
@@ -135,7 +135,7 @@ export default function JobSeekersTable() {
               </div>
               <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
                 {Math.floor(Math.random() * 15) + 1}
-                {/* {seeker.jobapplied.length} */}
+                {seeker.jobAppliedCount}
 
               </div>{" "}
               {/* Random Job Applied */}
