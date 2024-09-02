@@ -24,6 +24,7 @@ export async function GET(request) {
         if (!messages.length) {
             return NextResponse.json({ messages: [] }, { status: 200 });
         }
+        
 
         return NextResponse.json({ messages }, { status: 200 });
     } catch (error) {

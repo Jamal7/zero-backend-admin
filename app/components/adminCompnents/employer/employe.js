@@ -129,7 +129,8 @@ export default function JobSeekersTable() {
                 </div>
               </div>
               <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
-                {Math.floor(Math.random() * 15) + 1}
+                {/* {Math.floor(Math.random() * 15) + 1} */}
+                {seeker.jobapllied.length}
               </div>{" "}
               {/* Random Job Applied */}
               <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
