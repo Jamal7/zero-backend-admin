@@ -30,6 +30,7 @@
           $project: {
             userName: 1, // Keep the user's name
             email: 1, // Keep the user's email
+            status: 1,
             jobAppliedCount: 1, // Include the total applied job count
             totalJobPosted: 1 // Include the total job posted count
           }

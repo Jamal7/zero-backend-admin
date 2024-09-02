@@ -26,6 +26,7 @@ export async function GET() {
         $project: {
           userName: 1, // Keep the user's name
           email: 1, // Keep the user's email
+          status: 1,
           totalJobPosted: 1, // Include the total job count
           jobAppliedCount: 1 // Include the total applied job count
         }
