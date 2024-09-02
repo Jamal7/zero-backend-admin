@@ -13,39 +13,39 @@ export default function Topbar() {
     const [userRole] = useState('Admin');
 
     return (
-        <div className="flex items-center justify-between bg-white shadow py-4 px-4 md:px-10 h-24">
+        <div className="flex flex-col sm:flex-row items-center justify-between bg-white shadow py-4 px-4 sm:px-10 h-auto sm:h-24">
             {/* Left Side: Add New Button and Search */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 w-full sm:w-auto">
                 <button className="flex items-center h-12 px-3 py-2 border border-[#CCD4E0] text-blue-500 rounded hover:bg-blue-100">
                     <span className="mr-2">+</span> Add New
                 </button>
-                <div className="hidden md:flex items-center bg-gray-100 px-4 h-12 rounded-lg ml-8">
-                   <Image src={searchIcon} alt="Search Icon" />
+                <div className="flex items-center bg-gray-100 px-4 h-12 rounded-lg mt-4 sm:mt-0 sm:ml-8 w-full sm:w-auto">
+                    <Image src={searchIcon} />
                     <input
                         type="text"
                         placeholder="Search..."
-                        className="bg-gray-100 ml-2 outline-none"
+                        className="bg-gray-100 ml-2 outline-none w-full sm:w-auto"
                     />
                 </div>
             </div>
 
             {/* Right Side: User Info and Icons */}
-            <div className="flex items-center space-x-6">
-                <div className="flex items-center space-x-2 border-r pr-2 md:pr-8">
-                    <div className='hidden md:flex flex-col items-end'>
+            <div className="flex items-center space-x-6 mt-4 sm:mt-0 w-full sm:w-auto justify-between sm:justify-end">
+                <div className="flex items-center space-x-2 border-r pr-8">
+                    <div className="flex flex-col items-end">
                         <span className="text-black text-sm">{userName}</span>
                         <span className="text-gray-400 text-xs">{userRole}</span>
                     </div>
-                    <div className="w-8 md:w-12">
-                        <Image src={adminProfile} alt="Admin Profile" />
+                    <div className="">
+                        <Image className="w-12" src={adminProfile} />
                     </div>
-                    <div className='hidden md:block ml-2 md:ml-5'>
-                        <Image src={vector} alt="Vector Icon" />
+                    <div className="ml-5">
+                        <Image src={vector} />
                     </div>
                 </div>
 
-                <div className="flex items-center space-x-4 pl-3 w-24 justify-between">
-                    <Image src={notification} alt="Notification Icon" />
+                <div className="flex items-center space-x-4 pl-3 justify-between">
+                    <Image src={notification} />
                     <button onClick={() => signOut({ callbackUrl: '/' })}>
                         <Image src={logout} alt="Logout" />
                     </button>
