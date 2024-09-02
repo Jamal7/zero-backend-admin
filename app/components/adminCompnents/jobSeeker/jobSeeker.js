@@ -123,7 +123,7 @@ export default function JobSeekersTable() {
                   <span>
                     {seeker.email.length > 8
                       ? seeker.email.slice(0, 8) + "..."
-                      : seeker.email}
+                      : seeker.email} 
                   </span>
                   <div className="absolute left-0 hidden group-hover:block bg-gray-800 text-white text-xs rounded p-1 z-10 w-max">
                     {seeker.email}
