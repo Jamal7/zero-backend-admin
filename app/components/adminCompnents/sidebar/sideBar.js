@@ -26,15 +26,18 @@ const sidebarItems = [
 
 export default function Sidebar() {
     const pathname = usePathname();
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
 
     const toggleSidebar = () => {
+        console.log('im sabun dani');
         setIsExpanded(!isExpanded);
+        console.log('Sidebar toggled:', isExpanded);
     };
+    
 
     return (
-        <div className={`bg-[#5B8DD7] ${isExpanded ? 'w-64' : 'w-20'} min-h-screen relative py-4 pt-12 flex flex-col justify-between transition-all duration-300`}>
-            <div className="absolute bg-white w-10 h-[40px] top-10 left-10 rounded-full shadow-[4px_4px_10px_rgba(0,0,0,0.2)] flex justify-center items-center cursor-pointer" onClick={toggleSidebar}>
+        <div className={`bg-[#5B8DD7] ${isExpanded ? 'w-64' : 'w-20'} min-h-screen relative py-4 pt-12 flex flex-col justify-between transition-all duration-300`} onClick={toggleSidebar}>
+            <div className="absolute bg-white w-10 h-[40px] top-10 left-[90%] rounded-full shadow-[4px_4px_10px_rgba(0,0,0,0.2)] flex justify-center items-center cursor-pointer" >
                 <Image src={rightArrow} alt="Right Arrow Icon" width={20} height={20} className={`${isExpanded ? 'rotate-180' : ''} transition-transform duration-300`} />
             </div>
 
@@ -44,11 +47,12 @@ export default function Sidebar() {
                     {isExpanded && <span className="mr-5 ">Dashboard</span>}
                 </div>
 
-                <ul>
+                <ul className='w-full'>
                     {sidebarItems.map((item, index) => (
                         <li key={index} className="mb-4">
                             <Link href={item.link} passHref>
-                                <div className={`flex items-center md:pl-10 px-5 text-white py-3 gap-4 rounded ${pathname === item.link ? 'bg-[#78A1DE]' : 'hover:bg-[#78A1DE]'}`}>
+                                <div   className={`flex items-center ${isExpanded ? 'md:pl-10 px-5' : ' md:pl-5 px-1 justify-center' } py-3   text-white gap-4 rounded ${pathname === item.link ? 'bg-[#78A1DE]' : 'hover:bg-[#78A1DE]'}`}
+>
                                     <Image src={item.icon} alt={item.name} width={16} height={16} className="mr-2" />
                                     {isExpanded && <span>{item.name}</span>}
                                 </div>

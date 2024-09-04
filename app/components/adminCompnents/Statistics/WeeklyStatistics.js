@@ -4,9 +4,11 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 export default function WeeklyStatistics({ data }) {
   return (
-    <div style={{ padding: '20px 60px 20px 20px', background: "#fff", borderRadius:"10px", position: 'relative' }}>
-      <h3 className='text-left p-5 mb-10 border-b text-[22px] font-[700]'>Weekly Statistics</h3>
-      <ResponsiveContainer width="100%" height={380}>
+    <div className="mx-auto p-4 md:p-[20px_60px_20px_20px] bg-white rounded-lg relative max-w-full md:max-w-4xl">
+      <h3 className="text-left p-4 md:p-5 mb-6 md:mb-10 border-b text-lg md:text-[22px] font-bold">
+        Weekly Statistics
+      </h3>
+      <ResponsiveContainer width="100%" height={300} minHeight={380}>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="name" />
