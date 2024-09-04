@@ -21,12 +21,15 @@ const renderCustomLegend = (props) => {
   const { payload } = props;
 
   return (
-    <ul style={{ listStyleType: 'none', margin: 0, padding: 0, display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
+    <ul className="flex justify-end gap-5 list-none p-0 m-0">
       {payload.map((entry, index) => {
         const isIncome = entry.value === 'Income';
         return (
-          <li key={`item-${index}`} style={{ display: 'flex', alignItems: 'center', color: isIncome ? '#3D415C' : '#5A5E7C' }}>
-            <svg width="12" height="12" style={{ marginRight: 5 }}>
+          <li
+            key={`item-${index}`}
+            className={`flex items-center ${isIncome ? 'text-[#3D415C]' : 'text-[#5A5E7C]'}`}
+          >
+            <svg width="12" height="12" className="mr-1.5">
               <circle cx="6" cy="6" r="6" fill={entry.color} />
             </svg>
             {entry.value}
@@ -36,14 +39,14 @@ const renderCustomLegend = (props) => {
     </ul>
   );
 };
+
 const CustomGrid = (props) => {
   const { x, y, width, height, horizontalPoints, verticalPoints } = props;
 
   return (
     <g>
-      {/* Render horizontal lines excluding the one at y=0 */}
-      {horizontalPoints.map((point, index) => (
-        point !== 0 && (
+      {horizontalPoints.map((point, index) =>
+        point !== 0 ? (
           <line
             key={`hline-${index}`}
             x1={x}
@@ -53,9 +56,8 @@ const CustomGrid = (props) => {
             stroke="#e0e0e0"
             strokeDasharray="4 4"
           />
-        )
-      ))}
-      {/* Render vertical lines */}
+        ) : null
+      )}
       {verticalPoints.map((point, index) => (
         <line
           key={`vline-${index}`}
@@ -70,24 +72,27 @@ const CustomGrid = (props) => {
     </g>
   );
 };
+
 export default function BarCharts() {
   return (
-    <div style={{ padding: '40px 50px 100px 0px', background: "#fff", borderRadius:"10px", position: 'relative' }}>
+    <div className="p-10 bg-white rounded-lg relative">
+      <h3 className="text-center md:text-left pb-5 ml-10 mb-10 border-b text-sm font-semibold leading-6">
+        Acquisition number change per month in 2020 years
+      </h3>
       <ResponsiveContainer width="100%" height={300}>
-        <h3 className='text-left pb-5 ml-10 mb-10 border-b text-[14px] font-[600] leading-[24px]'>Acquisition number change per month in 2020 years</h3>
-
         <BarChart data={data}>
-        <CartesianGrid strokeDasharray="4 4" vertical={false} content={<CustomGrid />} />
-        <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: 'transparent' }} />
-          <YAxis tickLine={false} axisLine={false}  />
+          <CartesianGrid strokeDasharray="4 4" vertical={false} content={<CustomGrid />} />
+          <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: 'transparent' }} />
+          <YAxis tickLine={false} axisLine={false} />
           <Tooltip />
-          <Legend 
+          <Legend
             content={renderCustomLegend}
             wrapperStyle={{
               position: 'absolute',
               top: -86,
               right: 6,
             }}
+            className="absolute md:-top-[86px] md:right-[6px] -top-[100px] right-14 "
           />
           <Bar dataKey="Income" fill="#5B8DD7" radius={[10, 10, 10, 10]} barSize={5} />
           <Bar dataKey="Users" fill="#ADC6EB" radius={[10, 10, 10, 10]} barSize={5} />

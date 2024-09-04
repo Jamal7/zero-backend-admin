@@ -66,19 +66,19 @@ const AppRevenueStats = () => {
     };
 
     return (
-        <div className="bg-white rounded-xl flex flex-col  items-center py-5">
+        <div className="bg-white rounded-xl flex flex-col items-center py-5">
             <h1 className="text-[22px] font-[700] text-center mb-5">App Revenue Stats</h1>
-            <div className="relative w-full max-w-[350px] pl-16"> {/* Reduced max-width */}
+            <div className="relative w-full max-w-[350px] md:pl-16 pl-8"> {/* Adjusted padding for smaller screens */}
                 <Doughnut data={data} options={options} />
             </div>
-            <div className="flex flex-col items-left  px-10">
+            <div className="flex flex-col items-left px-5 md:px-10"> {/* Adjusted padding for smaller screens */}
                 {data.labels.map((label, index) => (
                     <div key={index} className="flex items-center mb-0">
                         <div
                             className="w-3 h-3 rounded-full mr-3"
                             style={{ backgroundColor: data.datasets[0].backgroundColor[index] }}
                         ></div>
-                        <span className="text-[#7C828A] text-[16px] font-[400] ">{label}</span>
+                        <span className="text-[#7C828A] text-[16px] font-[400]">{label}</span>
                     </div>
                 ))}
             </div>

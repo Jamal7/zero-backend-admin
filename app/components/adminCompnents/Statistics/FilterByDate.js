@@ -13,12 +13,14 @@ export default function FilterByDate({ onDateChange }) {
   };
 
   return (
-    <div style={{ padding: '20px', background: "#fff", borderRadius:"10px",}}>
-      <h3 className='text-center font-[700] text-[22px] leading-[21px] pb-5 mt-5 '>Filter By Date</h3>
+    <div className="p-4 md:p-6 bg-white rounded-lg">
+      <h3 className="text-center font-bold text-lg md:text-[22px] leading-[24px] pb-4 mt-4 md:mt-5">
+        Filter By Date
+      </h3>
       <div className="calendar-container">
-        <Calendar 
-          onChange={handleDateChange} 
-          value={date} 
+        <Calendar
+          onChange={handleDateChange}
+          value={date}
           className="custom-calendar"
         />
       </div>

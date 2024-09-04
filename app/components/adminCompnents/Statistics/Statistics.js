@@ -44,11 +44,11 @@ export default function AdminClientPage({ session }) {
             <Sidebar />
             <div className="flex flex-col w-full">
                 <Topbar />
-                <div className="flex flex-row py-10 px-5 gap-5">
-                    <div className="w-[70%]">
+                <div className="flex md:flex-row flex-col py-10 px-5 gap-5">
+                    <div className="md:w-[70%] w-[100%]">
                         <WeeklyStatistics data={weeklyData} />
                     </div>
-                    <div className="flex flex-col w-[30%] gap-5">
+                    <div className="flex flex-col md:w-[30%] w-[100%] gap-5">
                         <FilterByDate onDateChange={handleDateChange} />
                         <WeeklyProgress progress={progress} />
                     </div>
