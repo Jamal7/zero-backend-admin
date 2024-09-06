@@ -26,66 +26,86 @@ const sidebarItems = [
 
 export default function Sidebar() {
     const pathname = usePathname();
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(true); // Keep expanded for web (lg) by default
+    const [isMobile, setIsMobile] = useState(false); // Track if the view is mobile
 
     useEffect(() => {
-        // Check if the screen width is less than the lg breakpoint (1024px)
         const handleResize = () => {
-            if (window.innerWidth >= 1024) {
-                setIsExpanded(true); // Ensure the sidebar is expanded on large screens
+            if (window.innerWidth < 1024) {
+                setIsMobile(true);
+                setIsExpanded(false); // Collapse by default for mobile view
             } else {
-                setIsExpanded(false); // Collapse the sidebar on smaller screens
+                setIsMobile(false);
+                setIsExpanded(true); // Always expanded on large screens (lg)
             }
         };
 
-        handleResize(); // Set the initial state based on the screen width
+        handleResize(); // Check the size initially
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const toggleSidebar = () => {
-        setIsExpanded(!isExpanded);
+        if (isMobile) {
+            setIsExpanded(!isExpanded); // Only allow toggle on mobile
+        }
     };
 
     return (
-        <div
-            className={`
-                bg-[#5B8DD7] ${isExpanded ? 'w-64' : 'w-20'} min-h-screen py-4 pt-12 flex flex-col justify-between transition-all duration-300 
-                fixed lg:relative top-0 left-0 ${isExpanded ? 'lg:w-64' : 'lg:w-20'} z-50 
-            `}
-        >
-            <div 
-                className="absolute bg-white w-10 h-[40px] top-10 right-[-20px] rounded-full shadow-[4px_4px_10px_rgba(0,0,0,0.2)] flex justify-center items-center cursor-pointer lg:hidden"
-                onClick={toggleSidebar}
-            >
-                <Image src={rightArrow} alt="Right Arrow Icon" width={20} height={20} className={`${isExpanded ? 'rotate-180' : ''} transition-transform duration-300`} />
-            </div>
+        <>
+            {/* Toggle Arrow only visible on mobile */}
+            {isMobile && (
+                <div
+                    className="fixed bg-white w-10 h-[40px] top-10 left-2 rounded-full shadow-[4px_4px_10px_rgba(0,0,0,0.2)] flex justify-center items-center cursor-pointer z-50"
+                    onClick={toggleSidebar}
+                >
+                    <Image
+                        src={rightArrow}
+                        alt="Right Arrow Icon"
+                        width={20}
+                        height={20}
+                        className={`${isExpanded ? 'rotate-180' : ''} transition-transform duration-300`}
+                    />
+                </div>
+            )}
 
-            <div className="flex flex-col items-center justify-center">
-                <div className="relative mb-5 md:mb-14 flex gap-4 text-white font-bold text-lg md:pl-10 px-5">
-                    <Image src={logo} alt="Dashboard Logo" />
-                    {isExpanded && <span className="mr-5">Dashboard</span>}
+            {/* Sidebar */}
+            <div
+                className={`
+                    bg-[#5B8DD7] ${isExpanded || !isMobile ? 'translate-x-0' : '-translate-x-full'} w-64 
+                    min-h-screen py-4 pt-12 flex flex-col justify-between transition-all duration-300 
+                    fixed top-0 left-0 z-40 lg:relative lg:translate-x-0 lg:w-64
+                `}
+            >
+                <div className="flex flex-col items-center justify-center">
+                    <div className="relative mb-5 md:mb-14 flex gap-4 text-white font-bold text-lg md:pl-10 px-5">
+                        <Image src={logo} alt="Dashboard Logo" />
+                        {isExpanded && <span className="mr-5">Dashboard</span>}
+                    </div>
+
+                    <ul className="w-full">
+                        {sidebarItems.map((item, index) => (
+                            <li key={index} className="mb-4">
+                                <Link href={item.link} passHref>
+                                    <div
+                                        className={`flex items-center ${isExpanded ? 'md:pl-10 px-5' : 'md:pl-5 px-1 justify-center'} 
+                                        py-3 text-white gap-4 rounded ${pathname === item.link ? 'bg-[#78A1DE]' : 'hover:bg-[#78A1DE]'}`}
+                                    >
+                                        <Image src={item.icon} alt={item.name} width={16} height={16} className="mr-2" />
+                                        {isExpanded && <span>{item.name}</span>}
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
 
-                <ul className="w-full">
-                    {sidebarItems.map((item, index) => (
-                        <li key={index} className="mb-4">
-                            <Link href={item.link} passHref>
-                                <div className={`flex items-center ${isExpanded ? 'md:pl-10 px-5' : 'md:pl-5 px-1 justify-center'} py-3 text-white gap-4 rounded ${pathname === item.link ? 'bg-[#78A1DE]' : 'hover:bg-[#78A1DE]'}`}>
-                                    <Image src={item.icon} alt={item.name} width={16} height={16} className="mr-2" />
-                                    {isExpanded && <span>{item.name}</span>}
-                                </div>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+                <div className="text-white hover:bg-[#78A1DE] gap-4 pl-10 py-5 flex rounded cursor-pointer">
+                    <Image src={logoutIcon} alt="Logout Icon" />
+                    {isExpanded && <span>Logout</span>}
+                </div>
             </div>
-
-            <div className="text-white hover:bg-[#78A1DE] gap-4 pl-10 py-5 flex rounded cursor-pointer">
-                <Image src={logoutIcon} alt="Logout Icon" />
-                {isExpanded && <span>Logout</span>}
-            </div>
-        </div>
+        </>
     );
 }
