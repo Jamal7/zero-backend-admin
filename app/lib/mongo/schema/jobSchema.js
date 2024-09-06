@@ -17,8 +17,8 @@ const jobSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'in-progress', 'completed'], // Example statuses
-    default: 'pending',
+    enum: ['active', 'inactive'], // Example statuses
+    default: 'inactive',
   },
   imageUrl: {
     type: String,

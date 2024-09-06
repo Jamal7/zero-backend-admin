@@ -9,6 +9,7 @@ export async function POST(request) {
     const body = await request.json();
     const {jobId, status} = body;
     
+    console.log(jobId, status)
 
     if (!jobId || !status) {
       return NextResponse.json({ error: 'JobId and status are required.' }, { status: 400 });
@@ -25,6 +26,7 @@ export async function POST(request) {
     }
 
     job.status = status;
+    console.log(job)
     await job.save();
 
     return NextResponse.json({ message: 'Status updated successfully' }, { status: 200 });
