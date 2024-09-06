@@ -8,12 +8,13 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const {jobId, status} = body;
+    
 
     if (!jobId || !status) {
       return NextResponse.json({ error: 'JobId and status are required.' }, { status: 400 });
     }
 
-    const validStatuses = ['pending', 'in-progress', 'completed'];
+    const validStatuses = ['active', 'inactive'];
     if (!validStatuses.includes(status.toLowerCase())) {
       return NextResponse.json({ error: 'Invalid status.' }, { status: 400 });
     }
