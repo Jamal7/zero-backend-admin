@@ -18,7 +18,7 @@ export async function POST(request) {
         return NextResponse.json({ message: "User is already shortlisted for this job." });
       }
   
-      // Step 2: If not shortlisted, proceed with updating the user and job documents
+      // If not shortlisted, proceed with updating the user and job documents
       await User.updateOne(
         { _id: userId },
         { $push: { jobshortlist: jobId } }
