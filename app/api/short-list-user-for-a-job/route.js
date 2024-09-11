@@ -37,7 +37,7 @@ $match: {_id: new mongoose.Types.ObjectId(body.UserId)}
     }
 ])
 
-        return NextResponse.json({message: data})
+        return NextResponse.json(data)
     } catch (error) {
         return NextResponse.json({error: error.message})
     }
