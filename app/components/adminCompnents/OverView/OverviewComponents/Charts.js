@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from 'react';
 import MovingCart from './MovingGradientChart';
 
@@ -114,7 +114,7 @@ export default function Charts({
           />
           <div className="w-full sm:w-2/5 text-left mt-2.5">
             <h4 className="m-0 text-lg font-bold text-gray-700">
-              Total Number of Sales
+              {labelText} {/* Dynamic label text */}
             </h4>
             <div className="flex items-baseline gap-2.5">
               <span className="text-gray-800 text-sm font-normal flex items-end">
