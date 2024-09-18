@@ -7,6 +7,7 @@ import { NextResponse } from 'next/server';
 export async function GET(request) {
   await connectDb();
   try {
+    const allusers = await User.find({employer: "seeker"});
     // Get the logged-in user's ID from the query parameter
     const userId = request.nextUrl.searchParams.get("userId");
 
@@ -46,7 +47,7 @@ export async function GET(request) {
       },
     ]);
 
-    return NextResponse.json(appliedUsers);
+    return NextResponse.json([appliedUsers, allusers]);
   } catch (error) {
     return NextResponse.json({ message: "Error fetching users", error: error.message });
   }
