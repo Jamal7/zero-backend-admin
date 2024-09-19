@@ -12,9 +12,9 @@ export async function GET(request) {
     // Get the logged-in user's ID from the query parameter
     const userId = request.nextUrl.searchParams.get("userId");
 
-    const allusers = await User.find({employer: "seeker"});
+    const alluser = await User.find({employer: "seeker"});
 
-    const appliedUsers = await Job.aggregate([
+    const appliedUser = await Job.aggregate([
       {
         $match: {
            user: new mongoose.Types.ObjectId(userId),
@@ -25,25 +25,25 @@ export async function GET(request) {
           from: "users", 
           localField: "userapplied",
           foreignField: "_id",
-          as: "appliedJobs",
+          as: "appliedUsers",
         },
       },
       {
-        $unwind: "$appliedJobs"
+        $unwind: "$appliedUsers"
       },
       {
         $project: {
           jobTitle: 1,
           _id: 1,
-          "appliedJobs.userName": 1, 
-          "appliedJobs._id": 1,
-          "appliedJobs.imageUrl": 1,
-          "appliedJobs.description": 1
+          "appliedUsers.userName": 1, 
+          "appliedUsers._id": 1,
+          "appliedUsers.imageUrl": 1,
+          "appliedUsers.description": 1
         },
       },
     ]);
 
-    return NextResponse.json([appliedUsers, allusers]);
+    return NextResponse.json([appliedUser, alluser]);
   } catch (error) {
     return NextResponse.json({ message: "Error fetching users", error: error.message });
   }
