@@ -9,8 +9,8 @@ const CircularProgressBar = ({
   filledRatio,
 }) => {
   const remainingRatio = 1 - filledRatio;
-  const radius = 70; // Increased radius
-  const strokeWidth = 20; // Increased stroke width
+  const radius = 70;
+  const strokeWidth = 20;
   const normalizedRadius = radius - strokeWidth / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
 
@@ -18,6 +18,7 @@ const CircularProgressBar = ({
     <svg
       height={radius * 2}
       width={radius * 2.1}
+      className="sm:h-[120px] sm:w-[130px]" // Added for responsive scaling
     >
       <circle
         stroke="#e6e6e6"
@@ -62,8 +63,9 @@ const CircularProgressBar = ({
         textAnchor="middle"
         dy=".3em"
         fill={textColor}
-        fontSize="20px" // Increased font size
+        fontSize="20px" // Dynamic sizing for larger screens
         fontWeight="400"
+        className="sm:text-[18px]" // Smaller text for tablet view
       >
         {`${percentage}%`}
       </text>
@@ -75,13 +77,13 @@ export default function Charts({
   labelText, 
   percentage, 
   changeText, 
-  changeColor, 
   color, 
   textColor,
   filledRatio,
 }) {
   return (
-    <div className="relative p-12 bg-white rounded-lg flex flex-col sm:flex-row items-center justify-around box-border">
+    
+    <div className="relative p-6 sm:p-4 md:p-6 md:w-[33.3%] w-[90%]  bg-white rounded-lg flex flex-col sm:flex-row items-center justify-around box-border">
       {/* Options Icon at the Top Right */}
       <div className="absolute top-2.5 right-7 h-5 cursor-pointer">
         <svg 
@@ -112,9 +114,9 @@ export default function Charts({
             textColor={textColor}
             filledRatio={filledRatio}
           />
-          <div className="w-full sm:w-2/5 text-left mt-2.5">
-            <h4 className="m-0 text-lg font-bold text-gray-700">
-              Total Number of Sales
+          <div className="w-full sm:w-2/5 md:text-left text-center mt-2.5">
+            <h4 className="m-0 text-lg font-bold text-gray-700 sm:text-base"> {/* Adjusted font size */}
+              {labelText} 
             </h4>
             <div className="flex items-baseline gap-2.5">
               <span className="text-gray-800 text-sm font-normal flex items-end">
@@ -142,5 +144,6 @@ export default function Charts({
         </div>
       </div>
     </div>
+   
   );
 };
