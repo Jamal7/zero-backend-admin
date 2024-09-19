@@ -170,7 +170,7 @@ export default function JobSeekersTable() {
           ))}
       </div>
 
-      <button className="mt-4 md:py-2 py-1 mx-auto flex md:px-4 bg-[#007DC5] justify-center text-white rounded-md text-xs font-bold w-28 hover:bg-blue-600">
+      <button className="mt-4 py-2  mx-auto flex md:px-4 bg-[#007DC5] justify-center text-white rounded-md text-xs font-bold w-28 hover:bg-blue-600">
         Load More
       </button>
     </div>
