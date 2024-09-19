@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import React from 'react';
 import MovingCart from './MovingGradientChart';
 
@@ -9,15 +9,16 @@ const CircularProgressBar = ({
   filledRatio,
 }) => {
   const remainingRatio = 1 - filledRatio;
-  const radius = 70; // Increased radius
-  const strokeWidth = 20; // Increased stroke width
+  const radius = 80; // Increased radius
+  const strokeWidth = 20;
   const normalizedRadius = radius - strokeWidth / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
 
   return (
     <svg
-      height={radius * 2}
-      width={radius * 2.1}
+      height={radius * 2} 
+      width={radius * 2.2}  // Adjusted width for larger size
+      className="sm:h-[160px] sm:w-[200px] lg:max-w-[200px]" // Increased size for responsiveness
     >
       <circle
         stroke="#e6e6e6"
@@ -62,8 +63,9 @@ const CircularProgressBar = ({
         textAnchor="middle"
         dy=".3em"
         fill={textColor}
-        fontSize="20px" // Increased font size
+        fontSize="22px" // Slightly larger text size
         fontWeight="400"
+        className="sm:text-[20px]" // Increased for mobile view
       >
         {`${percentage}%`}
       </text>
@@ -75,13 +77,13 @@ export default function Charts({
   labelText, 
   percentage, 
   changeText, 
-  changeColor, 
   color, 
   textColor,
   filledRatio,
 }) {
   return (
-    <div className="relative p-12 bg-white rounded-lg flex flex-col sm:flex-row items-center justify-around box-border">
+    
+    <div className="relative p-6 sm:p-4 md:p-6 md:w-[33.3%] w-[90%] bg-white rounded-lg flex flex-col sm:flex-row items-center justify-around box-border">
       {/* Options Icon at the Top Right */}
       <div className="absolute top-2.5 right-7 h-5 cursor-pointer">
         <svg 
@@ -112,9 +114,9 @@ export default function Charts({
             textColor={textColor}
             filledRatio={filledRatio}
           />
-          <div className="w-full sm:w-2/5 text-left mt-2.5">
-            <h4 className="m-0 text-lg font-bold text-gray-700">
-              {labelText} {/* Dynamic label text */}
+          <div className="w-full sm:w-2/5 md:text-left text-center mt-2.5">
+            <h4 className="m-0 text-lg font-bold text-gray-700 sm:text-base">
+              {labelText} 
             </h4>
             <div className="flex items-baseline gap-2.5">
               <span className="text-gray-800 text-sm font-normal flex items-end">
@@ -142,5 +144,6 @@ export default function Charts({
         </div>
       </div>
     </div>
+   
   );
 };

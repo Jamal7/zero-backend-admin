@@ -13,18 +13,18 @@ export default function Topbar() {
     const [userRole] = useState('Admin');
 
     return (
-        <div className="flex flex-col sm:flex-row items-center justify-between bg-white shadow py-4 px-4 sm:px-10 h-auto sm:h-24">
+        <div className="w-full flex flex-col sm:flex-row items-center justify-between bg-white shadow py-4 px-4 sm:px-10">
             {/* Left Side: Add New Button and Search */}
             <div className="flex items-center space-x-4 w-full sm:w-auto">
                 <button className="flex items-center h-12 px-3 py-2 border border-[#CCD4E0] text-blue-500 rounded hover:bg-blue-100">
                     <span className="mr-2">+</span> Add New
                 </button>
                 <div className="flex items-center bg-gray-100 px-4 h-12 rounded-lg mt-4 sm:mt-0 sm:ml-8 w-full sm:w-auto">
-                    <Image src={searchIcon} />
+                    <Image src={searchIcon} alt="Search" />
                     <input
                         type="text"
                         placeholder="Search..."
-                        className="bg-gray-100 ml-2 outline-none w-full sm:w-auto"
+                        className="bg-gray-100 ml-2 outline-none w-full"
                     />
                 </div>
             </div>
@@ -36,16 +36,16 @@ export default function Topbar() {
                         <span className="text-black text-sm">{userName}</span>
                         <span className="text-gray-400 text-xs">{userRole}</span>
                     </div>
-                    <div className="">
-                        <Image className="w-12" src={adminProfile} />
+                    <div className="ml-2">
+                        <Image className="w-12" src={adminProfile} alt="Profile" />
                     </div>
                     <div className="ml-5">
-                        <Image src={vector} />
+                        <Image src={vector} alt="Vector" />
                     </div>
                 </div>
 
-                <div className="flex items-center space-x-4 pl-3 justify-between">
-                    <Image src={notification} />
+                <div className="flex items-center space-x-4 pl-3">
+                    <Image src={notification} alt="Notifications" />
                     <button onClick={() => signOut({ callbackUrl: '/' })}>
                         <Image src={logout} alt="Logout" />
                     </button>

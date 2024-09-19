@@ -12,8 +12,10 @@ export default function Users() {
         <SideBar />
         <div className="flex flex-col w-full">
         <Topbar/>
+        <div className="px-5 py-5">
         <JobSeeker/>
         <Employer/>
+        </div>   
         </div>
     </div>
   );
