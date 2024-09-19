@@ -69,32 +69,32 @@ export default function JobSeekersTable() {
   };
 
   return (
-    <div className="p-5 bg-white shadow-md rounded-lg w-[70%] m-5">
-      <h1 className="text-base font-bold text-[#5C5C5C] mb-5">Employer</h1>
+    <div className="md:p-5 p-2 bg-white shadow-md rounded-lg md:w-[70%] w-[100%] m-0 md:m-5">
+      <h1 className="md:text-base text-center font-bold text-[#5C5C5C] mb-5">Employer</h1>
 
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col md:space-y-2 space-y-2">
         {/* Header Row */}
-        <div className="flex p-3 font-semibold">
-          <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">
+        <div className="flex gap-1 mb-2 md:p-3 p-0 font-semibold">
+          <div className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold">
             Date
           </div>
-          <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">
+          <div className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold">
             User ID
           </div>
-          <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">
+          <div className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold">
             User Name
           </div>
-          <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">
+          <div className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold">
             User Email
           </div>
 
-          <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">
+          <div className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold">
             Job Post
           </div>
-          <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">
+          <div className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold">
             Status
           </div>
-          <div className="w-1/6 text-[#858585] text-xs leading-5 font-semibold">
+          <div className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold">
             Action
           </div>
         </div>
@@ -104,19 +104,19 @@ export default function JobSeekersTable() {
           jobSeekers.map((seeker, index) => (
             <div
               key={index}
-              className="flex p-3 bg-white border border-[#F0F0F0] rounded-md h-16 items-center"
+              className="flex md:gap-5 gap-3  justify-center md:p-3  px-4 border border-[#F0F0F0] rounded-md bg-white h-10 md:h-16 items-center"
             >
-              <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
+              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center  leading-3 md:leading-4 font-normal">
                 14/01/2019
               </div>{" "}
               {/* Static Date as in your example */}
-              <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
+              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center  leading-3 md:leading-4 font-normal">
                 {seeker._id.slice(0, 7)}
               </div>
-              <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
+              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center  leading-3 md:leading-4 font-normal">
                 {seeker.userName}
               </div>
-              <div className="w-1/6 text-[#858585] text-xs font-normal leading-4">
+              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center  leading-3 md:leading-4 font-normal">
                 <div className="relative group">
                   <span>
                     {seeker.email.length > 8
@@ -128,14 +128,14 @@ export default function JobSeekersTable() {
                   </div>
                 </div>
               </div>
-              <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
+              <div className="w-1/6 text-xs font-normal text-center leading-4 text-[#858585]">
                 {/* {Math.floor(Math.random() * 15) + 1} */}
                 {seeker.totalJobPosted}
               </div>{" "}
               {/* Random Job Applied */}
-              <div className="w-1/6 text-xs font-normal leading-4 text-[#858585]">
+              <div className="w-1/6 text-[#858585] text-xs text-[10px] font-normal leading-4">
                 <select
-                  className={`px-3 py-2 rounded-md text-white ${getStatusColor(
+                  className={`md:px-3 md:py-2 py-1 px-0 rounded-md text-white ${getStatusColor(
                     seeker.status
                   )}`}
                   value={seeker.status}
@@ -149,9 +149,11 @@ export default function JobSeekersTable() {
                   <option value="hired">Hired</option>
                 </select>
               </div>
-              <div className="w-1/6 flex gap-4">
+              <div className="w-1/6 flex md:gap-4 gap-1">
                 <button className="text-yellow-500 hover:text-yellow-700">
-                  <Image src={edit} />
+                  <Image src={edit} 
+                  
+                  />
                 </button>
                 <button className="text-red-500 hover:text-red-700">
                   <Image src={del} />
@@ -161,7 +163,7 @@ export default function JobSeekersTable() {
           ))}
       </div>
 
-      <button className="mt-4 py-2 mx-auto flex px-4 bg-[#007DC5] justify-center text-white rounded-md text-xs font-bold w-28 hover:bg-blue-600">
+      <button className="mt-4 md:py-2 py-1 mx-auto flex md:px-4 bg-[#007DC5] justify-center text-white rounded-md text-xs font-bold w-28 hover:bg-blue-600">
         Load More
       </button>
     </div>
