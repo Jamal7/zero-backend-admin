@@ -45,7 +45,7 @@ export default function AdminClientPage({ session }) {
           />
 
         </div >
-        <div className="flex md:flex-row flex-col gap-5 py-5 md:px-5 px-2 ">
+        <div className="flex md:flex-row flex-col gap-5 py-5 md:px-5 px-5 ">
           <div className=" w-[100%] md:w-[70%]">
             <BarCharts />
           </div>

@@ -75,29 +75,31 @@ const CustomGrid = (props) => {
 
 export default function BarCharts() {
   return (
-    <div className="p-10 bg-white rounded-lg relative">
-      <h3 className="text-center md:text-left pb-5 ml-10 mb-10 border-b text-sm font-semibold leading-6">
+    <div className="p-5 md:p-10 bg-white rounded-lg relative">
+      <h3 className="text-left pb-5 mb-10 border-b text-sm font-semibold leading-6">
         Acquisition number change per month in 2020 years
       </h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="4 4" vertical={false} content={<CustomGrid />} />
-          <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: 'transparent' }} />
-          <YAxis tickLine={false} axisLine={false} />
-          <Tooltip />
-          <Legend
-            content={renderCustomLegend}
-            wrapperStyle={{
-              position: 'absolute',
-              top: -86,
-              right: 6,
-            }}
-            className="absolute md:-top-[86px] md:right-[6px] -top-[100px] right-14 "
-          />
-          <Bar dataKey="Income" fill="#5B8DD7" radius={[10, 10, 10, 10]} barSize={5} />
-          <Bar dataKey="Users" fill="#ADC6EB" radius={[10, 10, 10, 10]} barSize={5} />
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="flex justify-center ml-[-37px]"> {/* Flexbox to center the chart */}
+        <ResponsiveContainer width="100%" height={300}> {/* Adjust width to 100% */}
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="4 4" vertical={false} content={<CustomGrid />} />
+            <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: 'transparent' }} />
+            <YAxis tickLine={false} axisLine={false} />
+            <Tooltip />
+            <Legend
+              content={renderCustomLegend}
+              wrapperStyle={{
+                position: 'absolute',
+                top: -86,
+                right: 6,
+              }}
+              className="absolute md:-top-[86px] md:right-[6px] -top-[100px] right-14"
+            />
+            <Bar dataKey="Income" fill="#5B8DD7" radius={[10, 10, 10, 10]} barSize={5} />
+            <Bar dataKey="Users" fill="#ADC6EB" radius={[10, 10, 10, 10]} barSize={5} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

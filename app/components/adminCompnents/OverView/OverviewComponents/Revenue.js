@@ -67,8 +67,8 @@ const AppRevenueStats = () => {
 
     return (
         <div className="bg-white rounded-xl flex flex-col items-center py-5">
-            <h1 className="text-[22px] font-[700] text-center mb-5">App Revenue Stats</h1>
-            <div className="relative w-full max-w-[350px] md:pl-16 pl-8"> {/* Adjusted padding for smaller screens */}
+            <h1 className="text-[22px] font-[700] text-center md:mb-5 mb-0">App Revenue Stats</h1>
+            <div className="relative w-full max-w-[350px] md:pl-8 pl-4"> {/* Adjusted padding for smaller screens */}
                 <Doughnut data={data} options={options} />
             </div>
             <div className="flex flex-col items-left px-5 md:px-10"> {/* Adjusted padding for smaller screens */}
