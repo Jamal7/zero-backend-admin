@@ -38,7 +38,7 @@ export async function GET(request) {
           "appliedUsers.userName": 1, 
           "appliedUsers._id": 1,
           "appliedUsers.imageUrl": 1,
-          "appliedUsers.description": 1
+          "appliedUsers.description": 1,
         },
       },
     ]);
