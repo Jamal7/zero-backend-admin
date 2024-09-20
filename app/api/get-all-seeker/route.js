@@ -5,7 +5,7 @@ import { connectDb } from "@/app/lib/mongo/conectDB";
 
 export async function  GET() {
 await connectDb();
-try {
+try { 
     const allSeeker = await User.find({employer: "seeker"})
     return NextResponse.json({User: allSeeker}, {status: 200})
 } catch (error) {
