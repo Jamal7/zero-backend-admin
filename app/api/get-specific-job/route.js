@@ -6,7 +6,7 @@ export async function GET(request) {
     await connectDb(); // Ensure DB is connected
 
     try {
-        // Get the jobId from the query parameters
+        // Get the jobId from the query parametersz
         const { searchParams } = new URL(request.url);
         const jobId = searchParams.get('jobId');
 
