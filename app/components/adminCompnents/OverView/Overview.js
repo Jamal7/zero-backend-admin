@@ -35,7 +35,7 @@ export default function AdminClientPage({ session }) {
 
           />
           <Charts
-            labelText="Total Number Of Users"
+            labelText="Total Number Of Users on site"
             percentage={98}
             changeText="12%"
             changeColor="red"
