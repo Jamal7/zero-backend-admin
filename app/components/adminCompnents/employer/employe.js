@@ -73,33 +73,62 @@ export default function JobSeekersTable() {
     setSelectedSeeker(seeker); // Store selected seeker
     setEditModalOpen(true); // Open the edit modal
   };
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/update-user/${seeker._id}`, // Ensure this endpoint is correct
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userName, email, totalJobPosted }),
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+  
+      // Re-fetch job seekers
+      onSave(); // Call the fetch function passed as a prop
+      onClose(); // Close the modal
+    } catch (error) {
+      console.error("Failed to update user:", error);
+      alert("Failed to update user: " + error.message); // Show alert on error
+    }
+  };
+  
   const handleDeleteClick = async (userId) => {
     const confirmDelete = confirm("Are you sure you want to delete this job seeker?");
     if (confirmDelete) {
       setLoading(true);
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/delete-user/${userId}`, // Adjust endpoint as necessary
+          `${process.env.NEXT_PUBLIC_API_URL}/api/delete-user/${userId}`, // Ensure this endpoint is correct
           {
             method: "DELETE",
           }
         );
-
+  
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
-
+  
+        // Update the job seekers state
         setJobSeekers((prevJobSeekers) => 
           prevJobSeekers.filter((seeker) => seeker._id !== userId)
         );
       } catch (error) {
         console.error("Failed to delete user:", error);
+        alert("Failed to delete user: " + error.message); // Show alert on error
       } finally {
         setLoading(false);
       }
     }
   };
+  
 
   return (
     <div className="md:p-5 p-2 bg-white shadow-md rounded-lg md:w-[70%] w-[100%] m-0 md:m-5">
