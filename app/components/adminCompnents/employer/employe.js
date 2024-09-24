@@ -37,22 +37,24 @@ export default function JobSeekersTable() {
   }, []);
 
   const handleStatusChange = async (userId, newStatus) => {
-    console.log(`Updating user ${userId} to status: ${newStatus}`); // Log the action
     setLoading(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/User`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/update-user-status`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({ userId, status: newStatus }),
         }
       );
-  
+
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-  
+
+      // Update the local state to reflect the change in status
       setJobSeekers((prevJobSeekers) =>
         prevJobSeekers.map((seeker) =>
           seeker._id === userId ? { ...seeker, status: newStatus } : seeker
@@ -60,11 +62,13 @@ export default function JobSeekersTable() {
       );
     } catch (error) {
       console.error("Failed to update user status:", error);
-      alert("Failed to update user status: " + error.message); // Alert the user
+      setError("Failed to update user status.");
     } finally {
       setLoading(false);
     }
   };
+
+
   
   const handleEditClick = (seeker) => {
     setSelectedSeeker(seeker);
@@ -161,18 +165,26 @@ export default function JobSeekersTable() {
               </div>
               <div className="w-1/6 text-[#858585] text-xs text-[10px] font-normal leading-4">
               <select
-  className={`md:px-3 md:py-2 py-1 px-0 rounded-md text-white ${getStatusColor(
-    seeker.status
-  )}`}
-  value={seeker.status}
-  onChange={(e) => handleStatusChange(seeker._id, e.target.value)}
-  disabled={loading}
->
-  <option value="active">Active</option>
-  <option value="inactive">Inactive</option>
-  <option value="hired">Hired</option>
-</select>
-
+                  className={`md:px-3 md:py-2 py-1 px-0 rounded-md text-white ${getStatusColor(
+                    seeker.status
+                  )}`}
+                  value={seeker.status} // The value reflects the current status of the user
+                  onChange={(e) =>
+                    handleStatusChange(seeker._id, e.target.value)
+                  }
+                  disabled={loading}
+                >
+                  {/* Set default value based on the current status */}
+                  <option value="active" selected={seeker.status === "active"}>
+                    Active
+                  </option>
+                  <option
+                    value="inactive"
+                    selected={seeker.status === "inactive"}
+                  >
+                    Inactive
+                  </option>
+                </select>
               </div>
               <div className="w-1/6 flex md:gap-4 gap-1">
                 <button
@@ -213,17 +225,18 @@ export default function JobSeekersTable() {
   );
 }
 
-// Utility function to get status color
 function getStatusColor(status) {
-  switch (status?.toLowerCase()) {
+  if (!status) {
+    return "bg-gray-500"; // Default color if status is undefined
+  }
+
+  switch (status.toLowerCase()) {
     case "active":
       return "bg-green-500";
     case "inactive":
       return "bg-red-500";
-    case "hired":
-      return "bg-blue-500";
     default:
-      return "bg-gray-500";
+      return "bg-green-500";
   }
 }
 
