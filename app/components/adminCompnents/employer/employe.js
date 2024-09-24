@@ -154,112 +154,13 @@ export default function JobSeekersTable() {
         Load More
       </button>
 
-      {/* Edit Modal */}
       {editModalOpen && selectedSeeker && (
         <EditModal
           seeker={selectedSeeker}
           onClose={() => setEditModalOpen(false)}
-          onSave={fetchJobSeekers}
+          onSave={fetchJobSeekers} // Re-fetch after save
         />
       )}
     </div>
   );
 }
-
-// Utility function to get status color
-function getStatusColor(status) {
-  switch (status?.toLowerCase()) {
-    case "active":
-      return "bg-green-500";
-    case "inactive":
-      return "bg-red-500";
-    case "hired":
-      return "bg-blue-500";
-    default:
-      return "bg-gray-500";
-  }
-}
-
-// EditModal Component
-const EditModal = ({ seeker, onClose, onSave }) => {
-  const [userName, setUserName] = useState(seeker.userName);
-  const [email, setEmail] = useState(seeker.email);
-  const [totalJobPosted, setTotalJobPosted] = useState(seeker.totalJobPosted);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/update-user/${seeker._id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userName, email, totalJobPosted }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
-      }
-
-      onSave(); // Refresh the job seekers list
-      onClose(); // Close the modal
-    } catch (error) {
-      console.error("Failed to save user data:", error);
-      alert("Failed to save user data: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white rounded-lg p-6 shadow-lg">
-        <h2 className="text-lg font-semibold mb-4">Edit Job Seeker</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block mb-1" htmlFor="userName">User Name</label>
-            <input
-              type="text"
-              id="userName"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              className="border border-gray-300 rounded w-full p-2"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block mb-1" htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-300 rounded w-full p-2"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block mb-1" htmlFor="totalJobPosted">Total Job Posted</label>
-            <input
-              type="number"
-              id="totalJobPosted"
-              value={totalJobPosted}
-              onChange={(e) => setTotalJobPosted(e.target.value)}
-              className="border border-gray-300 rounded w-full p-2"
-              required
-            />
-          </div>
-          <div className="flex justify-between">
-            <button type="button" onClick={onClose} className="py-2 px-4 bg-gray-400 text-white rounded">Cancel</button>
-            <button type="submit" className={`py-2 px-4 rounded ${loading ? 'bg-gray-400' : 'bg-blue-500 text-white'} `} disabled={loading}>
-              {loading ? "Saving..." : "Save"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
