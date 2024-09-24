@@ -70,7 +70,9 @@ export default function JobSeekersTable() {
   };
 
   const handleDeleteClick = async (userId) => {
-    const confirmDelete = confirm("Are you sure you want to delete this job seeker?");
+    const confirmDelete = confirm(
+      "Are you sure you want to delete this job seeker?"
+    );
     if (confirmDelete) {
       setLoading(true);
       try {
@@ -99,35 +101,71 @@ export default function JobSeekersTable() {
 
   return (
     <div className="md:p-5 p-2 bg-white shadow-md rounded-lg md:w-[70%] w-[100%] m-0 md:m-5">
-      <h1 className="md:text-base text-center font-bold text-[#5C5C5C] mb-5">Employer</h1>
+      <h1 className="md:text-base text-center font-bold text-[#5C5C5C] mb-5">
+        Employer
+      </h1>
 
       <div className="flex flex-col md:space-y-2 space-y-2">
         {/* Header Row */}
         <div className="flex gap-1 mb-2 md:p-3 p-0 font-semibold">
-          {["Date", "User ID", "User Name", "User Email", "Job Post", "Status", "Action"].map((header, index) => (
-            <div key={index} className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold">{header}</div>
+          {[
+            "Date",
+            "User ID",
+            "User Name",
+            "User Email",
+            "Job Post",
+            "Status",
+            "Action",
+          ].map((header, index) => (
+            <div
+              key={index}
+              className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold"
+            >
+              {header}
+            </div>
           ))}
         </div>
 
         {/* Data Rows */}
         {jobSeekers.length > 0 ? (
           jobSeekers.map((seeker) => (
-            <div key={seeker._id} className="flex md:gap-5 gap-3 justify-center md:p-3 px-4 border border-[#F0F0F0] rounded-md bg-white h-10 md:h-16 items-center">
-              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">14/01/2019</div>
-              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">{seeker._id.slice(0, 7)}</div>
-              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">{seeker.userName}</div>
+            <div
+              key={seeker._id}
+              className="flex md:gap-5 gap-3 justify-center md:p-3 px-4 border border-[#F0F0F0] rounded-md bg-white h-10 md:h-16 items-center"
+            >
+              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">
+                14/01/2019
+              </div>
+              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">
+                {seeker._id.slice(0, 7)}
+              </div>
+              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">
+                {seeker.userName}
+              </div>
               <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">
                 <div className="relative group">
-                  <span>{seeker.email.length > 8 ? `${seeker.email.slice(0, 8)}...` : seeker.email}</span>
-                  <div className="absolute left-0 hidden group-hover:block bg-gray-800 text-white text-xs rounded p-1 z-10 w-max">{seeker.email}</div>
+                  <span>
+                    {seeker.email.length > 8
+                      ? `${seeker.email.slice(0, 8)}...`
+                      : seeker.email}
+                  </span>
+                  <div className="absolute left-0 hidden group-hover:block bg-gray-800 text-white text-xs rounded p-1 z-10 w-max">
+                    {seeker.email}
+                  </div>
                 </div>
               </div>
-              <div className="w-1/6 text-xs font-normal text-center leading-4 text-[#858585]">{seeker.totalJobPosted}</div>
+              <div className="w-1/6 text-xs font-normal text-center leading-4 text-[#858585]">
+                {seeker.totalJobPosted}
+              </div>
               <div className="w-1/6 text-[#858585] text-xs text-[10px] font-normal leading-4">
                 <select
-                  className={`md:px-3 md:py-2 py-1 px-0 rounded-md text-white ${getStatusColor(seeker.status)}`}
+                  className={`md:px-3 md:py-2 py-1 px-0 rounded-md text-white ${getStatusColor(
+                    seeker.status
+                  )}`}
                   value={seeker.status}
-                  onChange={(e) => handleStatusChange(seeker._id, e.target.value)}
+                  onChange={(e) =>
+                    handleStatusChange(seeker._id, e.target.value)
+                  }
                   disabled={loading}
                 >
                   <option value="active">Active</option>
@@ -136,17 +174,25 @@ export default function JobSeekersTable() {
                 </select>
               </div>
               <div className="w-1/6 flex md:gap-4 gap-1">
-                <button className="text-yellow-500 hover:text-yellow-700" onClick={() => handleEditClick(seeker)}>
+                <button
+                  className="text-yellow-500 hover:text-yellow-700"
+                  onClick={() => handleEditClick(seeker)}
+                >
                   <Image src={edit} alt="Edit" />
                 </button>
-                <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteClick(seeker._id)}>
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => handleDeleteClick(seeker._id)}
+                >
                   <Image src={del} alt="Delete" />
                 </button>
               </div>
             </div>
           ))
         ) : (
-          <div className="text-center text-[#858585] md:text-xs text-[8px]">No job seekers available.</div>
+          <div className="text-center text-[#858585] md:text-xs text-[8px]">
+            No job seekers available.
+          </div>
         )}
       </div>
 
@@ -194,7 +240,7 @@ const EditModal = ({ seeker, onClose, onSave }) => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/update-user/${seeker._id}`,
         {
-          method: "PUT",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userName, email, totalJobPosted }),
         }
@@ -204,58 +250,71 @@ const EditModal = ({ seeker, onClose, onSave }) => {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
 
-      onSave(); // Refresh the job seekers list
+      onSave(); // Refresh job seekers data
       onClose(); // Close the modal
     } catch (error) {
-      console.error("Failed to save user data:", error);
-      alert("Failed to save user data: " + error.message);
+      console.error("Failed to update user:", error);
+      alert("Failed to update user: " + error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white rounded-lg p-6 shadow-lg">
-        <h2 className="text-lg font-semibold mb-4">Edit Job Seeker</h2>
+    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-6 rounded-md shadow-lg">
+        <h2 className="text-xl font-bold mb-4">Edit Job Seeker</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block mb-1" htmlFor="userName">User Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              User Name
+            </label>
             <input
               type="text"
-              id="userName"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="border border-gray-300 rounded w-full p-2"
+              className="w-full px-3 py-2 border rounded-md"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-1" htmlFor="email">Email</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
             <input
               type="email"
-              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-300 rounded w-full p-2"
+              className="w-full px-3 py-2 border rounded-md"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-1" htmlFor="totalJobPosted">Total Job Posted</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Total Job Posted
+            </label>
             <input
               type="number"
-              id="totalJobPosted"
               value={totalJobPosted}
               onChange={(e) => setTotalJobPosted(e.target.value)}
-              className="border border-gray-300 rounded w-full p-2"
+              className="w-full px-3 py-2 border rounded-md"
               required
             />
           </div>
-          <div className="flex justify-between">
-            <button type="button" onClick={onClose} className="py-2 px-4 bg-gray-400 text-white rounded">Cancel</button>
-            <button type="submit" className={`py-2 px-4 rounded ${loading ? 'bg-gray-400' : 'bg-blue-500 text-white'} `} disabled={loading}>
-              {loading ? "Saving..." : "Save"}
+          <div className="flex justify-end gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-300 rounded-md"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md"
+              disabled={loading}
+            >
+              Save
             </button>
           </div>
         </form>
