@@ -40,7 +40,7 @@ export default function JobSeekersTable() {
     setLoading(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/update-user-status`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/User`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
