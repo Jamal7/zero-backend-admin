@@ -185,9 +185,11 @@ const EditModal = ({ seeker, onClose, onSave }) => {
   const [userName, setUserName] = useState(seeker.userName);
   const [email, setEmail] = useState(seeker.email);
   const [totalJobPosted, setTotalJobPosted] = useState(seeker.totalJobPosted);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/update-user/${seeker._id}`,
@@ -202,15 +204,18 @@ const EditModal = ({ seeker, onClose, onSave }) => {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
 
-      onSave();
-      onClose();
+      onSave(); // Refresh the job seekers list
+      onClose(); // Close the modal
     } catch (error) {
-      console.error("Failed to update user:", error);
+      console.error("Failed to save user data:", error);
+      alert("Failed to save user data: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
       <div className="bg-white rounded-lg p-6 shadow-lg">
         <h2 className="text-lg font-semibold mb-4">Edit Job Seeker</h2>
         <form onSubmit={handleSubmit}>
@@ -249,7 +254,9 @@ const EditModal = ({ seeker, onClose, onSave }) => {
           </div>
           <div className="flex justify-between">
             <button type="button" onClick={onClose} className="py-2 px-4 bg-gray-400 text-white rounded">Cancel</button>
-            <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded">Save</button>
+            <button type="submit" className={`py-2 px-4 rounded ${loading ? 'bg-gray-400' : 'bg-blue-500 text-white'} `} disabled={loading}>
+              {loading ? "Saving..." : "Save"}
+            </button>
           </div>
         </form>
       </div>
