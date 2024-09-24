@@ -37,6 +37,7 @@ export default function JobSeekersTable() {
   }, []);
 
   const handleStatusChange = async (userId, newStatus) => {
+    console.log(`Updating user ${userId} to status: ${newStatus}`); // Log the action
     setLoading(true);
     try {
       const response = await fetch(
@@ -47,11 +48,11 @@ export default function JobSeekersTable() {
           body: JSON.stringify({ userId, status: newStatus }),
         }
       );
-
+  
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-
+  
       setJobSeekers((prevJobSeekers) =>
         prevJobSeekers.map((seeker) =>
           seeker._id === userId ? { ...seeker, status: newStatus } : seeker
@@ -59,11 +60,12 @@ export default function JobSeekersTable() {
       );
     } catch (error) {
       console.error("Failed to update user status:", error);
+      alert("Failed to update user status: " + error.message); // Alert the user
     } finally {
       setLoading(false);
     }
   };
-
+  
   const handleEditClick = (seeker) => {
     setSelectedSeeker(seeker);
     setEditModalOpen(true);
@@ -158,20 +160,19 @@ export default function JobSeekersTable() {
                 {seeker.totalJobPosted}
               </div>
               <div className="w-1/6 text-[#858585] text-xs text-[10px] font-normal leading-4">
-                <select
-                  className={`md:px-3 md:py-2 py-1 px-0 rounded-md text-white ${getStatusColor(
-                    seeker.status
-                  )}`}
-                  value={seeker.status}
-                  onChange={(e) =>
-                    handleStatusChange(seeker._id, e.target.value)
-                  }
-                  disabled={loading}
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="hired">Hired</option>
-                </select>
+              <select
+  className={`md:px-3 md:py-2 py-1 px-0 rounded-md text-white ${getStatusColor(
+    seeker.status
+  )}`}
+  value={seeker.status}
+  onChange={(e) => handleStatusChange(seeker._id, e.target.value)}
+  disabled={loading}
+>
+  <option value="active">Active</option>
+  <option value="inactive">Inactive</option>
+  <option value="hired">Hired</option>
+</select>
+
               </div>
               <div className="w-1/6 flex md:gap-4 gap-1">
                 <button
