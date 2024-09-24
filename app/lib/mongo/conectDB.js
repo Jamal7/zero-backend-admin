@@ -25,3 +25,4 @@ export const disconnectDb = async () => {
     process.exit(1);
   });
 };
+
