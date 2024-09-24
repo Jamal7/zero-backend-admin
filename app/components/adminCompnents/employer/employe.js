@@ -9,6 +9,7 @@ export default function JobSeekersTable() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [newUserModalOpen, setNewUserModalOpen] = useState(false); // Modal state for new user
   const [selectedSeeker, setSelectedSeeker] = useState(null);
 
   async function fetchJobSeekers() {
@@ -99,11 +100,25 @@ export default function JobSeekersTable() {
     }
   };
 
+  const handleCreateNewUser = (newUser) => {
+    setJobSeekers((prevJobSeekers) => [...prevJobSeekers, newUser]);
+  };
+
   return (
     <div className="md:p-5 p-2 bg-white shadow-md rounded-lg md:w-[70%] w-[100%] m-0 md:m-5">
       <h1 className="md:text-base text-center font-bold text-[#5C5C5C] mb-5">
         Employer
       </h1>
+
+      <div className="flex justify-end mb-4">
+        {/* New User Button */}
+        <button
+          onClick={() => setNewUserModalOpen(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        >
+          Create New User
+        </button>
+      </div>
 
       <div className="flex flex-col md:space-y-2 space-y-2">
         {/* Header Row */}
@@ -201,124 +216,34 @@ export default function JobSeekersTable() {
       </button>
 
       {/* Edit Modal */}
-      {editModalOpen && selectedSeeker && (
+      {/* {editModalOpen && selectedSeeker && (
         <EditModal
           seeker={selectedSeeker}
           onClose={() => setEditModalOpen(false)}
-          onSave={fetchJobSeekers}
         />
-      )}
+      )} */}
+
+      {/* New User Modal */}
+      {/* {newUserModalOpen && (
+        <NewUserModal
+          onClose={() => setNewUserModalOpen(false)}
+          onCreate={handleCreateNewUser}
+        />
+      )} */}
     </div>
   );
 }
 
 // Utility function to get status color
 function getStatusColor(status) {
-  switch (status?.toLowerCase()) {
+  switch (status) {
     case "active":
       return "bg-green-500";
     case "inactive":
-      return "bg-red-500";
+      return "bg-yellow-500";
     case "hired":
       return "bg-blue-500";
     default:
       return "bg-gray-500";
   }
 }
-
-// EditModal Component
-const EditModal = ({ seeker, onClose, onSave }) => {
-  const [userName, setUserName] = useState(seeker.userName);
-  const [email, setEmail] = useState(seeker.email);
-  const [totalJobPosted, setTotalJobPosted] = useState(seeker.totalJobPosted);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/update-user/${seeker._id}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userName, email, totalJobPosted }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
-      }
-
-      onSave(); // Refresh job seekers data
-      onClose(); // Close the modal
-    } catch (error) {
-      console.error("Failed to update user:", error);
-      alert("Failed to update user: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-md shadow-lg">
-        <h2 className="text-xl font-bold mb-4">Edit Job Seeker</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              User Name
-            </label>
-            <input
-              type="text"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Total Job Posted
-            </label>
-            <input
-              type="number"
-              value={totalJobPosted}
-              onChange={(e) => setTotalJobPosted(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
-              required
-            />
-          </div>
-          <div className="flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-300 rounded-md"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md"
-              disabled={loading}
-            >
-              Save
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
