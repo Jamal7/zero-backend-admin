@@ -8,7 +8,6 @@ import mongoose from "mongoose";
 export async function GET(request) {
   await connectDb();
   try {
-    
     // Get the logged-in user's ID from the query parameter
     const userId = request.nextUrl.searchParams.get("userId");
 
