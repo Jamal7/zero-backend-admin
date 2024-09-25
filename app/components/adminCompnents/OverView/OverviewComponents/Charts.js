@@ -122,7 +122,6 @@ export default function Charts({
               <span className="text-gray-800 text-sm font-normal flex items-end">
                 {changeText}
               
-                {/* Dropdown Icon */}
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   viewBox="0 0 20 20" 
