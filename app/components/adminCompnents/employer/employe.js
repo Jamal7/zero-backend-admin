@@ -74,6 +74,7 @@ export default function JobSeekersTable() {
     setSelectedSeeker(seeker);
     setEditModalOpen(true);
   };
+  
 
   const handleDeleteClick = async (userId) => {
     const confirmDelete = confirm(

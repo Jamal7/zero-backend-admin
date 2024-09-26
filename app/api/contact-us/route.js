@@ -3,9 +3,9 @@ import { connectDb } from '../../lib/mongo/conectDB';
 import Contact from '../../lib/mongo/schema/contactSechema';
 
 export async function POST(request) {
-  // Set CORS headers
+  // Replace '*' with the specific origin of your frontend application
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',  // Allow any origin
+    'Access-Control-Allow-Origin': 'http://localhost:3000',  // Replace with your actual frontend URL
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };

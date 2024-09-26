@@ -1,12 +1,10 @@
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
-
-import { connectDb, disconnectDb } from "../../lib/mongo/conectDB"; // Adjust the path as necessary
-import User from "../../lib/mongo/schema/userSchema"; // Adjust the path to your User model
+import { connectDb, disconnectDb } from "../../lib/mongo/conectDB";
+import User from "../../lib/mongo/schema/userSchema";
 
 export async function PUT(request, { params }) {
   const { id } = params; // Get the ID from the URL parameters
-
   await connectDb(); // Connect to the database
 
   try {
@@ -44,7 +42,7 @@ export async function PUT(request, { params }) {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       { userName, email, totalJobPosted },
-      { new: true } // Return the updated document
+      { new: true }
     );
 
     if (!updatedUser) {
@@ -58,10 +56,7 @@ export async function PUT(request, { params }) {
     
   } catch (error) {
     console.error('Error updating user:', error);
-    
-    // Ensure database is disconnected in case of an error
     await disconnectDb();
-    
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
