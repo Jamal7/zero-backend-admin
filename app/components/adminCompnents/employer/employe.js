@@ -303,6 +303,7 @@ const EditModal = ({ seeker, onClose, onSave }) => {
               className="w-full px-3 py-2 border rounded-md"
               required
             />
+          
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
