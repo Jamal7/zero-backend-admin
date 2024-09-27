@@ -9,15 +9,15 @@ export const authConfig = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        alert('Authorizing with credentials:', credentials);
+        console.log('Authorizing with credentials:', credentials);
 
         const user = { email: 'zero@zero.com', password: '12345678' };
 
         if (credentials.email === user.email && credentials.password === user.password) {
-          alert('Credentials matched:', user);
+          console.log('Credentials matched:', user);
           return { id: 1, name: 'Admin', email: user.email };
         } else {
-          alert('Invalid credentials provided');
+          console.log('Invalid credentials provided');
           return null;
         }
       },
@@ -25,7 +25,7 @@ export const authConfig = {
   ],
   pages: {
     signIn: '/login',
-    error: '/auth/error',
+    error: '/auth/error', // This page will show authentication errors
   },
-  secret: process.env.NEXTAUTH_SECRET, // Make sure this is correctly set
+  secret: process.env.NEXTAUTH_SECRET, // Ensure this is set correctly in .env.local
 };

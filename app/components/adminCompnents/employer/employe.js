@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import edit from "../../../../public/icons/edit.svg";
 import del from "../../../../public/icons/delete.svg";
-import Image from "next/image";
 
 export default function JobSeekersTable() {
   const [jobSeekers, setJobSeekers] = useState([]);
@@ -11,26 +11,22 @@ export default function JobSeekersTable() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedSeeker, setSelectedSeeker] = useState(null);
 
-  async function fetchJobSeekers() {
+  const fetchJobSeekers = async () => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/employe-users`,
-        {
-          headers: { "Cache-Control": "no-store" },
-        }
+        { headers: { "Cache-Control": "no-store" } }
       );
-
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-
       const data = await response.json();
       setJobSeekers(data);
     } catch (error) {
-      console.error("Failed to fetch job seekers:", error);
       setError(error.message);
+      console.error("Failed to fetch job seekers:", error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchJobSeekers();
@@ -43,63 +39,46 @@ export default function JobSeekersTable() {
         `${process.env.NEXT_PUBLIC_API_URL}/api/update-user-status`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userId, status: newStatus }),
         }
       );
-
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-
-      // Update the local state to reflect the change in status
-      setJobSeekers((prevJobSeekers) =>
-        prevJobSeekers.map((seeker) =>
+      setJobSeekers((prev) =>
+        prev.map((seeker) =>
           seeker._id === userId ? { ...seeker, status: newStatus } : seeker
         )
       );
     } catch (error) {
-      console.error("Failed to update user status:", error);
       setError("Failed to update user status.");
+      console.error("Failed to update user status:", error);
     } finally {
       setLoading(false);
     }
   };
 
-
-  
   const handleEditClick = (seeker) => {
     setSelectedSeeker(seeker);
     setEditModalOpen(true);
   };
-  
 
   const handleDeleteClick = async (userId) => {
-    const confirmDelete = confirm(
-      "Are you sure you want to delete this job seeker?"
-    );
-    if (confirmDelete) {
+    if (confirm("Are you sure you want to delete this job seeker?")) {
       setLoading(true);
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/delete-user/${userId}`,
-          {
-            method: "DELETE",
-          }
+          { method: "DELETE" }
         );
-
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
-
-        setJobSeekers((prevJobSeekers) =>
-          prevJobSeekers.filter((seeker) => seeker._id !== userId)
-        );
+        setJobSeekers((prev) => prev.filter((seeker) => seeker._id !== userId));
       } catch (error) {
-        console.error("Failed to delete user:", error);
         alert("Failed to delete user: " + error.message);
+        console.error("Failed to delete user:", error);
       } finally {
         setLoading(false);
       }
@@ -113,91 +92,61 @@ export default function JobSeekersTable() {
       </h1>
 
       <div className="flex flex-col md:space-y-2 space-y-2">
-        {/* Header Row */}
         <div className="flex gap-1 mb-2 md:p-3 p-0 font-semibold">
-          {[
-            "Date",
-            "User ID",
-            "User Name",
-            "User Email",
-            "Job Post",
-            "Status",
-            "Action",
-          ].map((header, index) => (
-            <div
-              key={index}
-              className="w-1/6 text-[#858585] md:text-xs md:text-left text-center text-[10px] leading-3 md:leading-5 font-semibold"
-            >
-              {header}
-            </div>
-          ))}
+          {["Date", "User ID", "User Name", "User Email", "Job Post", "Status", "Action"].map(
+            (header, index) => (
+              <div
+                key={index}
+                className="w-1/6 text-[#858585] md:text-xs text-center text-[10px] leading-3 md:leading-5 font-semibold"
+              >
+                {header}
+              </div>
+            )
+          )}
         </div>
 
-        {/* Data Rows */}
         {jobSeekers.length > 0 ? (
           jobSeekers.map((seeker) => (
             <div
               key={seeker._id}
-              className="flex md:gap-5 gap-3 justify-center md:p-3 px-4 border border-[#F0F0F0] rounded-md bg-white h-10 md:h-16 items-center"
+              className="flex gap-3 justify-center md:p-3 px-4 border border-[#F0F0F0] rounded-md bg-white h-10 md:h-16 items-center"
             >
-              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">
-                14/01/2019
-              </div>
-              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">
+              <div className="w-1/6 text-xs font-normal text-center text-[#858585]">14/01/2019</div>
+              <div className="w-1/6 text-xs font-normal text-center text-[#858585]">
                 {seeker._id.slice(0, 7)}
               </div>
-              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">
+              <div className="w-1/6 text-xs font-normal text-center text-[#858585]">
                 {seeker.userName}
               </div>
-              <div className="w-1/6 text-[#858585] md:text-xs text-[8px] md:text-left text-center leading-3 md:leading-4 font-normal">
-                <div className="relative group">
-                  <span>
-                    {seeker.email.length > 8
-                      ? `${seeker.email.slice(0, 8)}...`
-                      : seeker.email}
-                  </span>
-                  <div className="absolute left-0 hidden group-hover:block bg-gray-800 text-white text-xs rounded p-1 z-10 w-max">
-                    {seeker.email}
-                  </div>
+              <div className="w-1/6 text-xs font-normal text-center text-[#858585] relative group">
+                <span>
+                  {seeker.email.length > 8 ? `${seeker.email.slice(0, 8)}...` : seeker.email}
+                </span>
+                <div className="absolute left-0 hidden group-hover:block bg-gray-800 text-white text-xs rounded p-1 z-10 w-max">
+                  {seeker.email}
                 </div>
               </div>
-              <div className="w-1/6 text-xs font-normal text-center leading-4 text-[#858585]">
+              <div className="w-1/6 text-xs font-normal text-center text-[#858585]">
                 {seeker.totalJobPosted}
               </div>
-              <div className="w-1/6 text-[#858585] text-xs text-[10px] font-normal leading-4">
-              <select
+              <div className="w-1/6">
+                <select
                   className={`md:px-3 md:py-2 py-1 px-0 rounded-md text-white ${getStatusColor(
                     seeker.status
                   )}`}
-                  value={seeker.status} // The value reflects the current status of the user
-                  onChange={(e) =>
-                    handleStatusChange(seeker._id, e.target.value)
-                  }
+                  value={seeker.status}
+                  onChange={(e) => handleStatusChange(seeker._id, e.target.value)}
                   disabled={loading}
                 >
-                  {/* Set default value based on the current status */}
-                  <option value="active" selected={seeker.status === "active"}>
-                    Active
-                  </option>
-                  <option
-                    value="inactive"
-                    selected={seeker.status === "inactive"}
-                  >
-                    Inactive
-                  </option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
                 </select>
               </div>
-              <div className="w-1/6 flex md:gap-4 gap-1">
-                <button
-                  className="text-yellow-500 hover:text-yellow-700"
-                  onClick={() => handleEditClick(seeker)}
-                >
+              <div className="w-1/6 flex gap-1">
+                <button onClick={() => handleEditClick(seeker)}>
                   <Image src={edit} alt="Edit" />
                 </button>
-                <button
-                  className="text-red-500 hover:text-red-700"
-                  onClick={() => handleDeleteClick(seeker._id)}
-                >
+                <button onClick={() => handleDeleteClick(seeker._id)}>
                   <Image src={del} alt="Delete" />
                 </button>
               </div>
@@ -214,7 +163,6 @@ export default function JobSeekersTable() {
         Load More
       </button>
 
-      {/* Edit Modal */}
       {editModalOpen && selectedSeeker && (
         <EditModal
           seeker={selectedSeeker}
@@ -227,21 +175,16 @@ export default function JobSeekersTable() {
 }
 
 function getStatusColor(status) {
-  if (!status) {
-    return "bg-gray-500"; // Default color if status is undefined
-  }
-
-  switch (status.toLowerCase()) {
+  switch (status?.toLowerCase()) {
     case "active":
       return "bg-green-500";
     case "inactive":
       return "bg-red-500";
     default:
-      return "bg-green-500";
+      return "bg-gray-500";
   }
 }
 
-// EditModal Component
 const EditModal = ({ seeker, onClose, onSave }) => {
   const [userName, setUserName] = useState(seeker.userName);
   const [email, setEmail] = useState(seeker.email);
@@ -253,23 +196,21 @@ const EditModal = ({ seeker, onClose, onSave }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/update-user/${seeker._id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/edit/${seeker._id}`, // Use seeker._id here
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userName, email, totalJobPosted }),
         }
       );
-
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-
-      onSave(); // Refresh job seekers data
-      onClose(); // Close the modal
+      onSave(); 
+      onClose(); 
     } catch (error) {
-      console.error("Failed to update user:", error);
       alert("Failed to update user: " + error.message);
+      console.error("Failed to update user:", error);
     } finally {
       setLoading(false);
     }
@@ -279,11 +220,16 @@ const EditModal = ({ seeker, onClose, onSave }) => {
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-md shadow-lg">
         <h2 className="text-xl font-bold mb-4">Edit Job Seeker</h2>
+
+        {/* Display the seeker ID here */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Seeker ID:</label>
+          <div className="text-sm font-bold text-gray-900">{seeker._id}</div>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              User Name
-            </label>
+            <label className="block text-sm font-medium text-gray-700">User Name</label>
             <input
               type="text"
               value={userName}
@@ -293,9 +239,7 @@ const EditModal = ({ seeker, onClose, onSave }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               value={email}
@@ -303,12 +247,9 @@ const EditModal = ({ seeker, onClose, onSave }) => {
               className="w-full px-3 py-2 border rounded-md"
               required
             />
-          
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Total Job Posted
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Total Job Posted</label>
             <input
               type="number"
               value={totalJobPosted}
@@ -317,20 +258,20 @@ const EditModal = ({ seeker, onClose, onSave }) => {
               required
             />
           </div>
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end space-x-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 rounded-md"
+              className="px-4 py-2 bg-gray-300 text-black rounded-md"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md"
               disabled={loading}
             >
-              Save
+              {loading ? "Saving..." : "Save"}
             </button>
           </div>
         </form>
