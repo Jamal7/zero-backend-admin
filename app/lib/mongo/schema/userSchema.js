@@ -17,6 +17,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  pushToken: {
+    type: String,
+    default: null,
+  },
   employer: {
     type: String,
     required: true,
@@ -52,16 +56,38 @@ const userSchema = new Schema({
     type: String,
   }],
   jobapllied: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Job'
-    }],
+    type: Schema.Types.ObjectId,
+    ref: 'Job'
+  }],
   jobshortlist: [{
     type: Schema.Types.ObjectId,
     ref: 'Job'
-  }]  
+  }],
+  subscription: {
+    isActive: { type: Boolean, default: false },
+    plan: { type: String, default: null },
+    subscriptionId: { type: String, default: null },
+    startDate: { type: Date, default: null },
+    expiresAt: { type: Date, default: null },
+  },
+  isPaid: {
+    type: Boolean,
+    default: false
+  },
+  paymentMethods: [{
+    id: String,
+    brand: String,
+    last4: String,
+    expiryMonth: String,
+    expiryYear: String,
+    isDefault: { type: Boolean, default: false }
+  }]
 });
 
 // Create a Model
-const User = mongoose.models.User || model('User', userSchema);
+if (mongoose.models.User) {
+  delete mongoose.models.User;
+}
+const User = model('User', userSchema);
 
 export default User;

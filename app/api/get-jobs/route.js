@@ -7,11 +7,11 @@ export async function GET() {
     await connectDb();
 
     try {
-       
-        const jobs = await Job.find().populate({
+
+        const jobs = await Job.find({ status: 'active' }).populate({
             path: 'user',
-            model: User, 
-            select: 'userName', 
+            model: User,
+            select: 'userName',
         });
 
         const jobsWithUserName = jobs.map(job => ({

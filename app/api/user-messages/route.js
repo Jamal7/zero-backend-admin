@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectDb } from '../../lib/mongo/conectDB'; // Adjust the path as necessary
 import Message from '../../lib/mongo/schema/messageSchema'; // Assuming you have a Message schema
 import User from '@/app/lib/mongo/schema/userSchema';
+import Job from '@/app/lib/mongo/schema/jobSchema';
 export async function GET(request) {
     await connectDb();
 
@@ -19,12 +20,15 @@ export async function GET(request) {
                 { senderId: userId },
                 { receiverId: userId }
             ]
-        }).populate('senderId receiverId', 'userName email imageUrl'); // Populate user details
+        })
+            .populate('senderId receiverId', 'userName email imageUrl')
+            .populate('senderId receiverId', 'userName email imageUrl')
+            .populate('jobId', 'jobTitle price'); // Also populate job details
 
         if (!messages.length) {
             return NextResponse.json({ messages: [] }, { status: 200 });
         }
-        
+
 
         return NextResponse.json({ messages }, { status: 200 });
     } catch (error) {

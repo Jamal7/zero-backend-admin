@@ -2,7 +2,6 @@
 import { NextResponse } from 'next/server';
 import { connectDb } from '../../lib/mongo/conectDB';
 import User from '../../lib/mongo/schema/userSchema';
-import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import { sendEmail } from '../../lib/utils/nodemailer';
 
@@ -10,7 +9,8 @@ export async function POST(request) {
   await connectDb();
 
   try {
-    const { email } = await request.json();
+    let { email } = await request.json();
+    email = email?.trim()?.toLowerCase();
 
     if (!email) {
       return NextResponse.json({ error: 'Email is required.' }, { status: 400 });
@@ -43,7 +43,7 @@ export async function POST(request) {
 
     return NextResponse.json({ message: 'Password reset code sent to email.' }, { status: 200 });
   } catch (error) {
-    console.error('Error during password reset request:', error);
+    console.error('FULL Error during password reset request:', error);
     return NextResponse.json({ error: 'Server error. Please try again later.' }, { status: 500 });
   }
 }

@@ -9,9 +9,9 @@ export async function POST(request) {
   await connectDb();
 
   try {
-    const { userName,email, phoneNumber, employer, password, confirmPassword } = await request.json();
+    const { userName, email, phoneNumber, employer, password, confirmPassword } = await request.json();
 
-    console.log('Received data:', { userName,email, phoneNumber, employer, password, confirmPassword });
+    console.log('Received data:', { userName, email, phoneNumber, employer, password, confirmPassword });
 
     // Check if all fields are provided
     if (!userName || !email || !phoneNumber || !employer || !password || !confirmPassword) {
@@ -24,8 +24,8 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Invalid email format.' }, { status: 400 });
     }
 
-    // Validate phone number (e.g., must be 10-14 digits)
-    const phoneRegex = /^[0-9]{10,14}$/;
+    // Validate phone number (e.g., must be 10-14 digits, optional +)
+    const phoneRegex = /^\+?[0-9]{10,14}$/;
     if (!phoneRegex.test(phoneNumber)) {
       return NextResponse.json({ error: 'Invalid phone number. Must be 10-14 digits.' }, { status: 400 });
     }
@@ -46,7 +46,7 @@ export async function POST(request) {
 
     // Create new user with hashed password
     const newUser = new User({ userName, email, phoneNumber, employer, password: hashedPassword });
-    
+
     console.log('Saving new user:', newUser);
 
     await newUser.save();

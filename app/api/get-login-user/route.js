@@ -21,17 +21,24 @@ export async function POST(request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    console.log("Get User: Retrieved subscription:", user.subscription);
+
     // Check if imageUrl exists, if not, use a placeholder image
     const imageUrl = user.imageUrl || "https://via.placeholder.com/150";
 
     const userData = {
       _id: user._id,
+      userId: user._id, // Add userId for consistency with frontend expectations
       userName: user.userName,
       email: user.email,
       phoneNumber: user.phoneNumber,
       description: user.description || "",
       imageUrl: imageUrl,
+      subscription: user.subscription || {},
+      isPaid: user.isPaid || false,
+      paymentMethods: user.paymentMethods || [],
     };
+    console.log("Sending User Data:", userData.subscription);
 
     return NextResponse.json(
       { message: "User data retrieved successfully", user: userData },
@@ -42,3 +49,5 @@ export async function POST(request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
+export const dynamic = 'force-dynamic';

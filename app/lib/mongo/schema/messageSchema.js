@@ -11,22 +11,26 @@ const messageSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  jobId: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: "Job", 
-    required: false 
+  jobId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Job",
+    required: false
   },
-  text: { 
-    type: String, 
-    required: true 
+  text: {
+    type: String,
+    required: true
   },
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
+  createdAt: {
+    type: Date,
+    default: Date.now
   },
-  replyTo: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: "Message" 
+  imageUrl: {
+    type: String,
+    required: false
+  },
+  replyTo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Message"
   } // Field to reference the original message being replied to
 });
 

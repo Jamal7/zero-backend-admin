@@ -1,5 +1,4 @@
-const nodemailer = require('nodemailer');
-const SMTPTransport = require('nodemailer/lib/smtp-transport');
+import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -17,18 +16,16 @@ const transporter = nodemailer.createTransport({
   socketTimeout: 30000 // 30 seconds
 });
 
-function sendEmail({ to, subject, text, html }) {
+export const sendEmail = ({ to, subject, text, html }) => {
+  console.log('Sending email to:', to);
   const mailOptions = {
-    from: '"zero" <developer@tekvill.com>',
+    from: `Zero App <${process.env.SMTP_USER}>`,
     to,
     subject,
     text,
     html
   };
+  console.log('Mail options:', mailOptions);
 
   return transporter.sendMail(mailOptions);
-}
-
-module.exports = {
-  sendEmail
 };

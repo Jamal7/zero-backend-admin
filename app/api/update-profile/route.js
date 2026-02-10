@@ -32,8 +32,8 @@ export async function POST(request) {
       return NextResponse.json({ error: "Invalid email format." }, { status: 400 });
     }
 
-    // Validate phone number (e.g., must be 10-14 digits)
-    const phoneRegex = /^[0-9]{10,14}$/;
+    // Validate phone number (e.g., must be 10-14 digits, optional +)
+    const phoneRegex = /^\+?[0-9]{10,14}$/;
     if (!phoneRegex.test(phoneNumber)) {
       return NextResponse.json({ error: "Invalid phone number. Must be 10-14 digits." }, { status: 400 });
     }

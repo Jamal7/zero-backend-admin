@@ -15,13 +15,25 @@ export async function GET(request) {
             return NextResponse.json({ error: 'User ID and Other User ID are required.' }, { status: 400 });
         }
 
-        // Find messages between the logged-in user and the other user
-        const messages = await Message.find({
+        const jobId = searchParams.get('jobId');
+
+        // Construct the query
+        const query = {
             $or: [
                 { senderId: userId, receiverId: otherUserId },
                 { senderId: otherUserId, receiverId: userId }
             ]
-        }).sort({ createdAt: 1 }); // Sort messages by createdAt
+        };
+
+        // If jobId is provided and not empty/undefined, add it to the query
+        if (jobId && jobId !== 'undefined' && jobId !== 'null') {
+            query.jobId = jobId;
+        } else {
+            // If no jobId, look for messages with no jobId or null jobId
+            query.jobId = null;
+        }
+
+        const messages = await Message.find(query).sort({ createdAt: 1 });
 
         return NextResponse.json({ messages }, { status: 200 });
     } catch (error) {
