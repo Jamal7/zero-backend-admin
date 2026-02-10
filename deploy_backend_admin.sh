@@ -32,8 +32,14 @@ ssh -i "$KEY_FILE" -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << EO
     echo "Pulling latest changes..."
     # Ensure we are on main branch
     git checkout main
-    git pull origin2 main
+    git pull origin main
     
+    echo "Installing dependencies..."
+    npm install
+
+    echo "Building application..."
+    npm run build
+
     echo "Restarting application..."
     pm2 restart "$PM2_APP_NAME"
     
