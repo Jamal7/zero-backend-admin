@@ -29,10 +29,21 @@ ssh -i "$KEY_FILE" -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << EO
     echo "Connected to server."
     cd "$REMOTE_DIR" || { echo "Failed to change directory to $REMOTE_DIR"; exit 1; }
     
+    # Handle remote origin2 if not exists
+    if ! git remote | grep -q "origin2"; then
+        if git remote | grep -q "origin"; then
+            echo "Renaming origin to origin2..."
+            git remote rename origin origin2
+        else
+            echo "Error: Remote origin2 not found and origin not found. Please check git configuration."
+            exit 1
+        fi
+    fi
+
     echo "Pulling latest changes..."
     # Ensure we are on main branch
     git checkout main
-    git pull origin main
+    git pull origin2 main
     
     echo "Installing dependencies..."
     npm install
@@ -41,7 +52,15 @@ ssh -i "$KEY_FILE" -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << EO
     npm run build
 
     echo "Restarting application..."
-    pm2 restart "$PM2_APP_NAME"
+    if pm2 list | grep -q "$PM2_APP_NAME"; then
+        pm2 restart "$PM2_APP_NAME"
+    else
+        echo "App not running, starting it..."
+        pm2 start npm --name "$PM2_APP_NAME" -- start
+    fi
     
+    echo "Saving PM2 process list..."
+    pm2 save
+
     echo "Deployment complete."
 EOF
