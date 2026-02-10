@@ -3,7 +3,7 @@ import { connectDb } from '../../lib/mongo/conectDB';
 import User from '../../lib/mongo/schema/userSchema';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = () => new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request) {
     try {
@@ -30,10 +30,10 @@ export async function POST(request) {
         if (!subscriptionId) {
             console.log("SubscriptionId missing in DB, fetching from Stripe...");
             try {
-                const customers = await stripe.customers.list({ email: user.email, limit: 1 });
+                const customers = await stripe().customers.list({ email: user.email, limit: 1 });
                 if (customers.data.length > 0) {
                     const customerId = customers.data[0].id;
-                    const subscriptions = await stripe.subscriptions.list({
+                    const subscriptions = await stripe().subscriptions.list({
                         customer: customerId,
                         status: 'active',
                         limit: 1
@@ -50,7 +50,7 @@ export async function POST(request) {
 
         if (subscriptionId) {
             try {
-                await stripe.subscriptions.cancel(subscriptionId);
+                await stripe().subscriptions.cancel(subscriptionId);
                 console.log("Stripe subscription cancelled:", subscriptionId);
             } catch (stripeError) {
                 console.error("Error cancelling Stripe subscription:", stripeError);
