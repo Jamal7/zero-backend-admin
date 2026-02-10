@@ -40,6 +40,9 @@ ssh -i "$KEY_FILE" -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << EO
         fi
     fi
 
+    echo "Resetting local changes..."
+    git reset --hard HEAD
+
     echo "Pulling latest changes..."
     # Ensure we are on main branch
     git checkout main
