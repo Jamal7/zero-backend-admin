@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { connectDb } from '../../../../lib/mongo/conectDB';
-import User from '../../../../app/lib/mongo/schema/userSchema';
+import { connectDb } from '@/app/lib/mongo/conectDB';
+import User from '@/app/lib/mongo/schema/userSchema';
 
 export async function POST(request) {
     await connectDb();
