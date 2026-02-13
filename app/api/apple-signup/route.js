@@ -24,10 +24,18 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Email and Role are required.' }, { status: 400 });
         }
 
-        // Verify identityToken matches email if strictly needed (skipping for now based on login trust)
+        // Decode the identity token to get the user's email and sub (unique Apple ID)
+        const decodedToken = jwt.decode(identityToken);
+        const appleId = decodedToken.sub;
 
         // Check if user already exists
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({
+            $or: [
+                { email: email },
+                { appleId: appleId }
+            ]
+        });
+
         if (existingUser) {
             return NextResponse.json({ error: 'User already exists.' }, { status: 400 });
         }
@@ -40,6 +48,7 @@ export async function POST(request) {
         const newUser = new User({
             userName: userName || 'Apple User',
             email,
+            appleId, // Save the Apple ID
             phoneNumber: phoneNumber || '',
             employer,
             password: hashedPassword,

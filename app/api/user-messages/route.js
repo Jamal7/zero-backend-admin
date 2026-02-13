@@ -22,7 +22,6 @@ export async function GET(request) {
             ]
         })
             .populate('senderId receiverId', 'userName email imageUrl')
-            .populate('senderId receiverId', 'userName email imageUrl')
             .populate('jobId', 'jobTitle price'); // Also populate job details
 
         if (!messages.length) {

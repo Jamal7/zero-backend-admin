@@ -17,22 +17,43 @@ export async function POST(request) {
         // Note: In production, you should verify the token signature with Apple's public keys.
         // Here we are decoding it for the email claim.
         const decodedToken = jwt.decode(identityToken);
+        console.log("Apple Login - Decoded Token:", JSON.stringify(decodedToken));
 
         if (!decodedToken || !decodedToken.email) {
-            return NextResponse.json({ error: 'Invalid Identity Token' }, { status: 401 });
+            console.log("Apple Login - No email in token");
+            return NextResponse.json({ error: 'Invalid Identity Token - No Email found' }, { status: 401 });
         }
 
+        const appleId = decodedToken.sub;
         const email = decodedToken.email;
+        console.log("Apple Login - Extracted Email:", email);
+        console.log("Apple Login - Extracted Apple ID:", appleId);
 
-        // Find the user by email
-        const user = await User.findOne({ email });
+        // 1. Try to find user by Apple ID (Primary method)
+        let user = await User.findOne({ appleId });
+
+        if (!user) {
+            console.log("Apple Login - User not found by Apple ID. Checking by email...");
+            // 2. Fallback: Try to find by email (Legacy users)
+            if (email) {
+                user = await User.findOne({ email });
+
+                if (user) {
+                    // 3. If found by email, update the user with Apple ID for future logins
+                    console.log("Apple Login - User found by email. Updating with Apple ID.");
+                    user.appleId = appleId;
+                    await user.save();
+                }
+            }
+        }
 
         if (!user) {
             // User not found - Frontend handles this by redirecting to socialAdditionDetails
             return NextResponse.json({
                 message: 'User not found',
                 userExists: false,
-                email
+                email,
+                appleId
             }, { status: 200 }); // Status 200 because it's a valid check, just no user found
         }
 

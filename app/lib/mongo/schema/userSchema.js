@@ -17,6 +17,11 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  appleId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
   pushToken: {
     type: String,
     default: null,
