@@ -29,6 +29,9 @@ export async function GET(request) {
                 }
             },
             {
+                $unwind: "$shortlistedUsers"
+            },
+            {
                 $project: {
                     jobTitle: 1,
                     price: 1,
@@ -45,10 +48,13 @@ export async function GET(request) {
             }
         ]);
 
+        // console.log("Jobs with shortlisted users:", JSON.stringify(jobs, null, 2));
+
         // Flatten the data: one entry per user per job
         const flattenedData = [];
         for (const job of jobs) {
-            for (const user of job.shortlistedUsers || []) {
+            if (job.shortlistedUsers) {
+                const user = job.shortlistedUsers;
                 flattenedData.push({
                     jobId: job._id,
                     jobTitle: job.jobTitle,
