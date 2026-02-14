@@ -11,12 +11,13 @@ export async function GET() {
         const jobs = await Job.find({ status: 'active' }).populate({
             path: 'user',
             model: User,
-            select: 'userName',
+            select: 'userName imageUrl',
         });
 
         const jobsWithUserName = jobs.map(job => ({
             ...job.toObject(),
             userName: job.user ? job.user.userName : 'Unknown',
+            employerImage: job.user ? job.user.imageUrl : null,
         }));
 
         return NextResponse.json(jobsWithUserName, { status: 200 });
