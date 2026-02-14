@@ -37,7 +37,10 @@ export async function GET(request) {
                 }
             },
             {
-                $unwind: "$shortlistedUsers"
+                $unwind: {
+                    path: "$shortlistedUsers",
+                    preserveNullAndEmptyArrays: true
+                }
             },
             {
                 $project: {
@@ -51,7 +54,8 @@ export async function GET(request) {
                     "shortlistedUsers.userName": 1,
                     "shortlistedUsers.imageUrl": 1,
                     "shortlistedUsers.description": 1,
-                    "shortlistedUsers.email": 1
+                    "shortlistedUsers.email": 1,
+                    userShortlistId: 1 // Keep this to debug if user lookup failed
                 }
             }
         ]);
@@ -61,8 +65,12 @@ export async function GET(request) {
         // Flatten the data: one entry per user per job
         const flattenedData = [];
         for (const job of jobs) {
-            if (job.shortlistedUsers) {
-                const user = job.shortlistedUsers;
+            // If shortlistedUsers exists, use it. If not, fallback to the ID we preserved
+            const user = job.shortlistedUsers || {};
+
+            // If we have a user record OR we have a shortlist ID but no user record (deleted user?)
+            // We want to show something rather than nothing to debug
+            if (user._id || job.userShortlistId) {
                 flattenedData.push({
                     jobId: job._id,
                     jobTitle: job.jobTitle,
@@ -71,10 +79,10 @@ export async function GET(request) {
                     jobDescription: job.description,
                     jobStatus: job.status,
                     jobImageUrl: job.imageUrl,
-                    userId: user._id,
-                    userName: user.userName || "Unknown User",
+                    userId: user._id || job.userShortlistId, // Fallback to the raw ID
+                    userName: user.userName || "Unknown/Deleted User",
                     userImageUrl: user.imageUrl || null,
-                    userDescription: user.description || "",
+                    userDescription: user.description || "User details not found",
                     userEmail: user.email || ""
                 });
             }
