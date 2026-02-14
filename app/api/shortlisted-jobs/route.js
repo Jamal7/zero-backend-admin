@@ -21,9 +21,17 @@ export async function GET(request) {
                 }
             },
             {
+                $unwind: "$usershortlist"
+            },
+            {
+                $addFields: {
+                    userShortlistId: { $toObjectId: "$usershortlist" }
+                }
+            },
+            {
                 $lookup: {
                     from: "users",
-                    localField: "usershortlist",
+                    localField: "userShortlistId",
                     foreignField: "_id",
                     as: "shortlistedUsers"
                 }

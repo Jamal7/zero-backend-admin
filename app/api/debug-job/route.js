@@ -5,7 +5,14 @@ import { NextResponse } from "next/server";
 export async function GET(request) {
     await connectDb();
     const id = request.nextUrl.searchParams.get("id");
-    if (!id) return NextResponse.json({ error: "No ID" });
+    const userId = request.nextUrl.searchParams.get("userid");
+
+    if (userId) {
+        const jobs = await Job.find({ user: userId });
+        return NextResponse.json(jobs);
+    }
+
+    if (!id) return NextResponse.json({ error: "No ID or UserID" });
 
     const job = await Job.findById(id);
     return NextResponse.json(job);
