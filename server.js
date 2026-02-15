@@ -118,7 +118,7 @@ app.prepare().then(async () => {
 
                 // Send Push Notification
                 try {
-                    const User = require('./app/lib/mongo/schema/userSchema').default;
+                    const User = mongoose.models.User;
                     const { sendPushNotification } = require('./lib/notifications/pushNotification');
 
                     const receiver = await User.findById(receiverId);

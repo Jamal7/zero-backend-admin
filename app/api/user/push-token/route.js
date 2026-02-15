@@ -8,8 +8,8 @@ export async function POST(request) {
     try {
         const { userId, pushToken } = await request.json();
 
-        if (!userId || !pushToken) {
-            return NextResponse.json({ error: 'userId and pushToken are required' }, { status: 400 });
+        if (!userId) {
+            return NextResponse.json({ error: 'userId is required' }, { status: 400 });
         }
 
         const updatedUser = await User.findByIdAndUpdate(
