@@ -37,6 +37,23 @@ export async function POST(request) {
         });
 
         if (existingUser) {
+            if (existingUser.email === email) {
+                // Same email — re-link the (possibly stale) appleId and log them in
+                existingUser.appleId = appleId;
+                await existingUser.save();
+                const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+                return NextResponse.json({
+                    message: 'Account linked and login successful',
+                    token,
+                    user: {
+                        email: existingUser.email,
+                        employer: existingUser.employer,
+                        userName: existingUser.userName,
+                        _id: existingUser._id
+                    }
+                }, { status: 200 });
+            }
+            // Found by appleId but email doesn't match — reject
             return NextResponse.json({ error: 'User already exists.' }, { status: 400 });
         }
 
