@@ -2,6 +2,8 @@ const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
 const { Server } = require('socket.io');
+const { existsSync, createReadStream } = require('fs');
+const { join, extname, resolve } = require('path');
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = process.env.HOST || '0.0.0.0';
@@ -60,8 +62,38 @@ app.prepare().then(async () => {
         console.error('❌ MongoDB connection error:', err);
     }
 
+    // MIME types for serving uploaded files
+    const MIME_TYPES = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+        '.webp': 'image/webp',
+        '.svg': 'image/svg+xml',
+    };
+
     const server = createServer((req, res) => {
         const parsedUrl = parse(req.url, true);
+
+        // Serve uploaded files directly from public/uploads/
+        if (parsedUrl.pathname && parsedUrl.pathname.startsWith('/uploads/')) {
+            const filename = parsedUrl.pathname.replace('/uploads/', '');
+            // Security: prevent directory traversal
+            if (filename.includes('..') || filename.includes('/')) {
+                res.writeHead(400);
+                res.end('Bad request');
+                return;
+            }
+            const filePath = join(process.cwd(), 'public', 'uploads', filename);
+            if (existsSync(filePath)) {
+                const ext = extname(filePath).toLowerCase();
+                const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+                res.writeHead(200, { 'Content-Type': contentType });
+                createReadStream(filePath).pipe(res);
+                return;
+            }
+        }
+
         handle(req, res, parsedUrl);
     });
 
