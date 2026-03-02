@@ -155,7 +155,13 @@ app.prepare().then(async () => {
 
                     const receiver = await User.findById(receiverId);
                     if (receiver && receiver.pushToken) {
-                        await sendPushNotification(receiver.pushToken, text || 'You have a new image message');
+                        const notificationData = {
+                            type: 'message',
+                            senderId,
+                            receiverId,
+                            jobId: jobId || null
+                        };
+                        await sendPushNotification(receiver.pushToken, text || 'You have a new image message', notificationData);
                         console.log(`📲 Push notification sent to ${receiver.userName}`);
                     } else {
                         console.log(`🔕 No push token for user ${receiverId}`);
