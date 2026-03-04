@@ -119,7 +119,7 @@ app.prepare().then(async () => {
         // Handle sending messages
         socket.on('sendMessage', async (data) => {
             console.log('📨 Message received:', data);
-            const { senderId, receiverId, text, jobId, imageUrl } = data;
+            const { senderId, receiverId, text, jobId, imageUrl, senderName } = data;
 
             try {
                 // Save message to database
@@ -158,10 +158,11 @@ app.prepare().then(async () => {
                         const notificationData = {
                             type: 'message',
                             senderId,
+                            senderName: senderName || 'User',
                             receiverId,
                             jobId: jobId || null
                         };
-                        await sendPushNotification(receiver.pushToken, text || 'You have a new image message', notificationData);
+                        await sendPushNotification(receiver.pushToken, text || 'You have a new image message', notificationData, senderName || 'New Message');
                         console.log(`📲 Push notification sent to ${receiver.userName}`);
                     } else {
                         console.log(`🔕 No push token for user ${receiverId}`);
