@@ -1,0 +1,13 @@
+
+> zeronew@0.1.0 dev
+> node server.js
+
+✅ Connected to MongoDB
+
+🚀 Server ready!
+   - Local:    http://localhost:3000
+   - Network:  http://0.0.0.0:3000
+   - Mode:     Development
+    
+ ✓ Compiled /api/request-password-reset in 312ms (108 modules)
+ POST /api/request-password-reset 404 in 415ms
